@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>나로그 프로필</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* 한 열 프로필 페이지: 헤더 바 → 프로필 → 프로젝트 카드 그리드 → 이력 목록 */
+:root{
+  --bg:#ffffff; --fg:#1c1f23; --muted:#5d636b; --faint:#8a9099;
+  --line:#e7e5ee; --soft:#f5f4f8; --accent:#6a3df0; --accent-soft:#f0ebff; --cursor:#ffb3d9;
+  --side:#9a4a0b; --side-soft:#fdf1e6; --on-accent:#ffffff;
+  --sans:'IBM Plex Sans KR',system-ui,-apple-system,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#121417; --fg:#eceef1; --muted:#a3a9b1; --faint:#7d838c;
+  --line:#2a2e34; --soft:#1b1e22; --accent:#a98bff; --accent-soft:#261d44;
+  --side:#f0a766; --side-soft:#2d2016; --on-accent:#160d2e; color-scheme:dark}}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:15px;line-height:1.55}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.bar-in{max-width:1000px;margin:0 auto;padding-inline:20px;height:56px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:8px;min-width:0}
+.logo{width:30px;height:30px;flex-shrink:0;display:block}
+.logo .caret{animation:blink 1.1s steps(1,end) infinite}
+@keyframes blink{50%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.logo .caret{animation:none}}
+.brand b{font-size:15px}
+.brand span{font-family:var(--mono);font-size:13px;color:var(--faint);white-space:nowrap}
+.btn{height:34px;padding:0 13px;border-radius:7px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font-size:13px;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{background:var(--soft)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.btn.primary:hover{filter:brightness(1.08)}
+
+main{max-width:1000px;margin:0 auto;padding:48px 20px 72px;display:flex;flex-direction:column;gap:52px}
+
+.profile{display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap}
+.avatar{width:96px;height:96px;border-radius:50%;flex-shrink:0;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-size:26px;font-weight:600}
+.pinfo{flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:12px}
+.name{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+h1{margin:0;font-size:32px;font-weight:700;letter-spacing:-.6px}
+.url{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.intro{margin:0;font-size:17px;color:var(--muted);max-width:60ch}
+.chips,.links{display:flex;gap:8px;flex-wrap:wrap}
+.chip{height:28px;padding:0 11px;border-radius:14px;background:var(--soft);font-size:13px;color:var(--muted);display:inline-flex;align-items:center}
+
+h2{margin:0;font-size:20px;font-weight:700;letter-spacing:-.3px}
+.sec{display:flex;flex-direction:column;gap:18px}
+.sec-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.tabs{display:flex;gap:3px;padding:3px;background:var(--soft);border-radius:9px}
+.tab{height:30px;padding:0 13px;border:0;border-radius:7px;background:transparent;color:var(--muted);font-size:13px}
+.tab[aria-pressed="true"]{background:var(--bg);color:var(--fg);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+.card{border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;background:var(--bg)}
+.thumb{aspect-ratio:16/9;max-width:100%;background:var(--soft);border-bottom:1px solid var(--line);display:grid;place-items:center;font-family:var(--mono);font-size:12px;color:var(--faint)}
+.cbody{padding:18px;display:flex;flex-direction:column;gap:9px;flex-grow:1;min-width:0}
+.badges{display:flex;gap:6px}
+.badge{height:22px;padding:0 8px;border-radius:5px;font-size:12px;display:inline-flex;align-items:center;background:var(--soft);color:var(--muted)}
+.badge.main{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.badge.side{background:var(--side-soft);color:var(--side);font-weight:600}
+h3{margin:0;font-size:17px;font-weight:700}
+.desc{margin:0;font-size:14px;color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.note{margin-top:auto;padding:10px 12px;border-radius:8px;background:var(--soft);display:flex;flex-direction:column;gap:3px}
+.note small{font-size:11px;font-weight:600;color:var(--faint);letter-spacing:.2px}
+.note span{font-size:13px}
+.add{border:1.5px dashed var(--line);border-radius:12px;background:transparent;color:var(--muted);min-height:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.add:hover{background:var(--soft)}
+.add .plus{width:40px;height:40px;border-radius:50%;background:var(--soft);display:grid;place-items:center;color:var(--fg)}
+.add b{font-size:14px;color:var(--fg)}
+.add span{font-size:12px}
+
+.list{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.row{display:grid;grid-template-columns:130px minmax(0,1fr) auto;gap:16px;padding:16px 20px;align-items:center}
+.row+.row{border-top:1px solid var(--line)}
+.row .when{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.row .what{display:flex;flex-direction:column;gap:2px;min-width:0}
+.row .what b{font-size:15px;font-weight:600}
+.row .what span{font-size:13px;color:var(--muted)}
+.row .kind{font-size:12px;color:var(--muted)}
+@media (max-width:560px){
+  .row{grid-template-columns:minmax(0,1fr) auto}
+  .row .when{grid-column:1/-1}
+  h1{font-size:28px}
+  .brand span{display:none}
+}
+footer{text-align:center;font-size:12px;color:var(--faint)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:9px 16px;border-radius:8px;font-size:13px}
+@media (prefers-reduced-motion:no-preference){.btn,.tab,.add{transition:background .15s}}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar-in">
+    <div class="brand"><svg class="logo" viewBox="0 0 112 112" aria-hidden="true"><rect width="112" height="112" rx="26" fill="#6a3df0"></rect><path d="M20 44 L30 54 L20 64" fill="none" stroke="#ffffff" stroke-opacity="0.75" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M40 36 V70 H62 M74 32 V78 M74 54 H86" fill="none" stroke="#ffffff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"></path><rect class="caret" x="79" y="83" width="16" height="9" rx="4.5" fill="#ffb3d9"></rect></svg><b>나로그</b><span>/ taeyoon</span></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn" type="button" id="edit-btn">편집</button>
+      <button class="btn primary" type="button" id="copy-btn">링크 복사</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="profile">
+    <div class="avatar" aria-hidden="true">태윤</div>
+    <div class="pinfo">
+      <div class="name"><h1>김태윤</h1><span class="url" id="page-url">narog.me/taeyoon</span></div>
+      <p class="intro">[한 줄 소개 — 예: 떠오른 아이디어를 바로 만들어 보고, 쓸 만하면 런칭까지 가져가는 사람]</p>
+      <div class="chips">
+        <span class="chip">한국외대 글로벌캠퍼스 전자물리학과</span>
+        <span class="chip">창업</span>
+        <span class="chip">바이브코딩</span>
+      </div>
+      <div class="links">
+        <a class="btn" href="#">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"></path></svg>스레드</a>
+        <a class="btn" href="#">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>GitHub</a>
+        <span class="btn" style="cursor:text;user-select:all">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><polyline points="3 7 12 13 21 7"></polyline></svg>[이메일 주소]</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="proj-h">
+    <div class="sec-head">
+      <h2 id="proj-h">프로젝트</h2>
+      <div class="tabs" role="group" aria-label="프로젝트 필터">
+        <button class="tab" type="button" data-f="all" aria-pressed="true">전체 2</button>
+        <button class="tab" type="button" data-f="main" aria-pressed="false">메인 1</button>
+        <button class="tab" type="button" data-f="side" aria-pressed="false">사이드 1</button>
+      </div>
+    </div>
+    <div class="grid">
+      <article class="card" data-kind="main">
+        <div class="thumb">[대표 이미지]</div>
+        <div class="cbody">
+          <div class="badges"><span class="badge main">메인</span><span class="badge">진행 중</span></div>
+          <h3>LIGHTGO</h3>
+          <p class="desc">배송주소 네트워크 서비스</p>
+          <div class="meta">[시작 월] – 진행 중 · 공동창업</div>
+          <div class="note"><small>메인으로 올린 이유</small><span>[승격할 때 남긴 한 줄]</span></div>
+        </div>
+      </article>
+      <article class="card" data-kind="side">
+        <div class="thumb">[대표 이미지]</div>
+        <div class="cbody">
+          <div class="badges"><span class="badge side">사이드</span><span class="badge">진행 중</span></div>
+          <h3>나로그</h3>
+          <p class="desc">내가 만든 것들을 링크 하나로 보여 주는 포트폴리오</p>
+          <div class="meta">2026.09 – 진행 중 · 1인 개발</div>
+          <div class="note"><small>왜 만들기 시작했나</small><span>이력서에 링크 하나만 넣으면 되도록, 내가 쓰려고.</span></div>
+        </div>
+      </article>
+      <button class="add" type="button" id="add-btn">
+        <span class="plus"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></span>
+        <b>프로젝트 추가</b><span>사이드로 시작해요</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="hist-h">
+    <h2 id="hist-h">이력</h2>
+    <div class="list">
+      <div class="row"><span class="when">[기간]</span><div class="what"><b>LIGHTGO 공동창업</b><span>[맡은 역할 한 줄]</span></div><span class="kind">창업</span></div>
+      <div class="row"><span class="when">[기간]</span><div class="what"><b>아틀라스 랩</b><span>개발 과정을 기록하는 팀 스레드 운영</span></div><span class="kind">활동</span></div>
+      <div class="row"><span class="when">[입학 연도] –</span><div class="what"><b>한국외국어대학교 글로벌캠퍼스</b><span>전자물리학과 재학</span></div><span class="kind">학력</span></div>
+    </div>
+  </section>
+
+  <footer>나로그로 만든 페이지</footer>
+</main>
+
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function(){
+  var toast=document.getElementById('toast'),t;
+  function show(msg){toast.textContent=msg;toast.hidden=false;clearTimeout(t);t=setTimeout(function(){toast.hidden=true},1800)}
+  document.querySelectorAll('.tab').forEach(function(b){
+    b.addEventListener('click',function(){
+      var f=b.dataset.f;
+      document.querySelectorAll('.tab').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+      document.querySelectorAll('.card').forEach(function(c){c.hidden=!(f==='all'||c.dataset.kind===f)});
+    });
+  });
+  document.getElementById('copy-btn').addEventListener('click',function(){
+    var txt=window.location.href;
+    try{navigator.clipboard.writeText(txt).then(function(){show('링크를 복사했어요')},function(){show('복사하지 못했어요. 주소창에서 직접 복사해 주세요')})}
+    catch(e){show('복사하지 못했어요. 주소창에서 직접 복사해 주세요')}
+  });
+  document.getElementById('edit-btn').addEventListener('click',function(){show('편집 기능은 곧 붙일 예정이에요')});
+  document.getElementById('add-btn').addEventListener('click',function(){show('프로젝트 추가는 곧 붙일 예정이에요')});
+})();
+</script>
+</body>
+</html>
