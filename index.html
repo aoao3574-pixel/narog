@@ -105,6 +105,7 @@ footer{text-align:center;font-size:12px;color:var(--faint)}
   <div class="bar-in">
     <div class="brand"><svg class="logo" viewBox="0 0 112 112" aria-hidden="true"><rect width="112" height="112" rx="26" fill="#6a3df0"></rect><path d="M20 44 L30 54 L20 64" fill="none" stroke="#ffffff" stroke-opacity="0.75" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M40 36 V70 H62 M74 32 V78 M74 54 H86" fill="none" stroke="#ffffff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"></path><rect class="caret" x="79" y="83" width="16" height="9" rx="4.5" fill="#ffb3d9"></rect></svg><b>나로그</b><span>/ taeyoon</span></div>
     <div style="display:flex;gap:8px">
+      <button class="btn" type="button" id="login-btn">구글로 로그인</button>
       <button class="btn" type="button" id="edit-btn">편집</button>
       <button class="btn primary" type="button" id="copy-btn">링크 복사</button>
     </div>
@@ -203,6 +204,31 @@ footer{text-align:center;font-size:12px;color:var(--faint)}
   document.getElementById('edit-btn').addEventListener('click',function(){show('편집 기능은 곧 붙일 예정이에요')});
   document.getElementById('add-btn').addEventListener('click',function(){show('프로젝트 추가는 곧 붙일 예정이에요')});
 })();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = 'https://hewftpwfaimhhrseaeqb.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_fiAloDOyRKwZYkNU7Yonbg__ig8bYPV';
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const loginBtn = document.getElementById('login-btn');
+  let currentUser = null;
+
+  loginBtn.addEventListener('click', async () => {
+    if (currentUser) {
+      await sb.auth.signOut();
+    } else {
+      await sb.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: window.location.origin }
+      });
+    }
+  });
+
+  sb.auth.onAuthStateChange((event, session) => {
+    currentUser = session ? session.user : null;
+    loginBtn.textContent = currentUser ? '로그아웃' : '구글로 로그인';
+  });
 </script>
 </body>
 </html>
