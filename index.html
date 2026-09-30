@@ -313,6 +313,38 @@ button.t-link:hover{color:var(--fg)}
 .lpanel .dlinks .ltitle-edit:hover,.lpanel .dlinks .ltitle-edit:focus{border-color:var(--line);background:var(--bg)}
 .lpanel .dlinks .star{font-size:12px;color:var(--accent);font-weight:600;padding:4px 6px}
 .lpanel .laddform input{height:36px;font-size:14px;padding:6px 10px;font-family:inherit}
+.lfoot{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.lfoot .hint{flex:1;min-width:0}
+.lrow textarea{flex:1;min-width:0;resize:none;line-height:1.5;overflow:hidden}
+textarea.grow{resize:none;line-height:1.5;overflow:hidden;font-family:inherit}
+.startgl{height:32px;padding:0 12px;border-radius:16px;border:1px solid var(--line);background:var(--bg);font-size:13px;font-weight:600;color:var(--muted);cursor:pointer}
+.startgl[aria-pressed="true"]{background:#fff4c2;border-color:#e8c547;color:#6b5200}
+.timeline li.trow.click{cursor:pointer;border-radius:8px;padding-left:6px;padding-right:6px;margin:0 -6px}
+.timeline li.trow.click:hover{background:var(--soft)}
+.timeline li.trow.star{background:#fff6d1}
+.timeline li.trow.star:hover{background:#ffefb0}
+.timeline li.trow.open{box-shadow:inset 0 0 0 1px var(--line)}
+.t-type.note{padding:0}
+.timeline li.trow.star .t-type{background:transparent;color:#8a6500;padding-left:0}
+.timeline li.trow .t-text{white-space:pre-wrap;color:var(--fg);font-weight:400}
+.timeline li.trow.click:focus{outline:none}
+.timeline li.trow.click:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.timeline li.tact{display:flex;flex-direction:column;gap:8px;border-top:0;padding:4px 0 12px 50px}
+.timeline li.tact .row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+@media (max-width:520px){.timeline li.tact{padding-left:0}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .timeline li.trow.star{background:#3a3212}:root:not([data-theme="light"]) .timeline li.trow.star:hover{background:#463c16}:root:not([data-theme="light"]) .timeline li.trow.star .t-type{color:#f0cf6a}:root:not([data-theme="light"]) .startgl[aria-pressed="true"]{background:#3a3212;border-color:#8a6d1a;color:#f0cf6a}}
+.one{white-space:pre-wrap}
+.badge.stop{background:var(--soft);color:var(--muted);border:1px solid var(--line)}
+.dot.stop{background:var(--faint)}
+.card.stopped{background:var(--soft)}
+.card.stopped .name{color:var(--muted)}
+.why.stopwhy{background:var(--bg);border:1px dashed var(--line)}
+.t-type.stop{background:var(--soft);color:var(--muted)}
+.t-type.resume{background:transparent;color:var(--accent);padding-left:0}
+.ldate{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--muted)}
+.ldate input{height:32px;padding:0 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);font:inherit;font-size:13px;font-weight:400}
+.ldate.past input{border-color:#e8c547;background:#fff8dc}
+.t-wrote{display:inline-block;margin-left:8px;font-size:11px;color:var(--faint);border:1px solid var(--line);border-radius:5px;padding:0 5px;white-space:nowrap}
 .timeline li.tfilter{display:block;border-top:0;font-size:12px;color:var(--muted);padding:4px 0 2px}
 #home .foot-links{margin:0}
 
@@ -438,8 +470,8 @@ button.brand{border:0;background:transparent;padding:0;font:inherit;font-weight:
   </div>
   <div class="gogrid">
     <button type="button" class="gocard" id="go-log">
-      <span class="gok">뭘 판단했나</span>
-      <b>오늘 어디까지 했나요?</b>
+      <span class="gok">한 줄로 기록하기</span>
+      <b>나의 프로젝트에 무슨 일이 있었나요?</b>
       <span class="gosub" id="go-log-sub"></span>
       <svg class="goarr" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg>
     </button>
@@ -450,7 +482,7 @@ button.brand{border:0;background:transparent;padding:0;font:inherit;font-weight:
       <svg class="goarr" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg>
     </button>
     <button type="button" class="gocard" id="go-pf">
-      <span class="gok">꺼내 쓰기</span>
+      <span class="gok">프로젝트 선택해서</span>
       <b>나만의 AI 포트폴리오 만들기</b>
       <span class="gosub" id="go-pf-sub"></span>
       <svg class="goarr" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg>
@@ -479,7 +511,7 @@ button.brand{border:0;background:transparent;padding:0;font:inherit;font-weight:
         <span class="gok">담기</span>
         <p class="firstnote" id="newp-first" hidden>기록할 프로젝트가 아직 없어요. 먼저 만든 걸 올려 주세요</p>
         <h2 id="newp-h">새로 만든 게 있나요?</h2>
-        <p class="hint" style="margin:0">주소를 붙이고 왜 만들었는지 한 줄만 적어 주세요. 사이드 프로젝트로 올라가요.</p>
+        <p class="hint" style="margin:0">주소를 붙이고 왜 만들었는지 적어 주세요. 사이드 프로젝트로 올라가요.</p>
       </div>
     </div>
     <form class="quick" id="add-form" novalidate>
@@ -505,8 +537,8 @@ button.brand{border:0;background:transparent;padding:0;font:inherit;font-weight:
           <input type="text" id="f-name" maxlength="40" placeholder="비우면 주소로 채워요" autocomplete="off">
         </div>
         <div class="field">
-          <label for="f-one">왜 만들었나요? (한 줄)</label>
-          <input type="text" id="f-one" maxlength="120" placeholder="예: 내가 쓰려고, 친구가 불편하다고 해서" autocomplete="off">
+          <label for="f-one">왜 만들었나요?</label>
+          <textarea id="f-one" class="grow" rows="1" placeholder="예: 내가 쓰려고, 친구가 불편하다고 해서. 길어도 괜찮아요"></textarea>
         </div>
       </div>
       <div class="qattach" id="qattach" hidden>
@@ -533,6 +565,7 @@ button.brand{border:0;background:transparent;padding:0;font:inherit;font-weight:
             <button type="button" id="dm-promote"></button>
             <button type="button" id="dm-edit">이름·한 줄 수정</button>
             <button type="button" id="dm-hide"></button>
+            <button type="button" id="dm-stop"></button>
             <button type="button" id="dm-delete" class="danger-t">삭제</button>
           </div>
         </div>
@@ -557,16 +590,15 @@ button.brand{border:0;background:transparent;padding:0;font:inherit;font-weight:
     </div>
 
     <form class="lform big" id="log-form" novalidate>
-      <p class="lq">오늘 어디까지 했나요?</p>
-      <div class="where" id="d-where" role="radiogroup" aria-label="어디를 작업했나요"></div>
-      <div class="types" role="radiogroup" aria-label="기록 종류">
-        <button type="button" class="type" role="radio" data-t="decide" aria-checked="true">판단</button>
-        <button type="button" class="type" role="radio" data-t="fix" aria-checked="false">수정</button>
-        <button type="button" class="type" role="radio" data-t="add" aria-checked="false">추가</button>
-      </div>
+      <p class="lq" id="d-q">무슨 일이 있었나요?</p>
       <div class="lrow">
-        <label for="log-text" class="sr">기록 한 줄</label>
-        <input type="text" id="log-text" maxlength="140" placeholder="오늘 뭘 정했어요?" autocomplete="off">
+        <label for="log-text" class="sr">오늘 한 일</label>
+        <textarea id="log-text" class="grow" rows="1" placeholder="미팅, 인터뷰, 조사, 결정, 고친 것… 뭐든 적어요. 길어도 괜찮아요"></textarea>
+      </div>
+      <div class="lfoot">
+        <button type="button" class="startgl" id="log-star" aria-pressed="false"><span aria-hidden="true">☆</span> 강조</button>
+        <label class="ldate" for="log-date"><span>있었던 날</span><input type="date" id="log-date"></label>
+        <span class="hint">강조한 기록은 포트폴리오에 빠짐없이 들어가요</span>
         <button class="btn primary sm" type="submit">남기기</button>
       </div>
       <span class="err" id="log-err" hidden></span>
@@ -710,10 +742,11 @@ function guessKind(url){
   return 'site';
 }
 
-var TYPE_LABEL = { why:'왜 만들었나', decide:'판단', fix:'수정', add:'추가', up:'왜 키웠나', auto:'자동' };
+var TYPE_LABEL = { stop:'중단한 이유', resume:'다시 시작', why:'왜 만들었나', decide:'기록', fix:'기록', add:'기록', log:'기록', up:'왜 키웠나', auto:'자동' };
+function isNote(l){ return l.type === 'log' || l.type === 'decide' || l.type === 'fix' || l.type === 'add'; }
 function L(type, text, at){ return { id: uid(), type: type, text: text, at: at }; }
 function K(kind, url, title){ return { id: uid(), kind: kind, url: url, title: title || KIND_LABEL[kind] }; }
-function addLog(it, type, text, linkId){ it.logs = it.logs || []; var l = L(type, text, nowISO()); if (linkId) l.linkId = linkId; it.logs.push(l); }
+function addLog(it, type, text, linkId, star){ it.logs = it.logs || []; var l = L(type, text, nowISO()); if (linkId) l.linkId = linkId; if (star) l.star = true; it.logs.push(l); return l; }
 function sortedLogs(it){ return (it.logs || []).slice().sort(function(a,b){ return a.at < b.at ? 1 : -1; }); }
 function lastAt(it){ var l = sortedLogs(it)[0]; return l ? l.at : ''; }
 function primaryLink(it){ var ls = it.links || []; for (var i=0;i<ls.length;i++) if (ls[i].id === it.primary) return ls[i]; return ls[0] || null; }
@@ -742,11 +775,11 @@ function byRecent(a,b){ return lastAt(a) < lastAt(b) ? 1 : -1; }
 function byOrder(a,b){ var x = a.order == null ? 1e9 : a.order, y = b.order == null ? 1e9 : b.order; return x !== y ? x - y : byRecent(a,b); }
 
 function render(){
-  var mainN = items.filter(function(i){return i.kind==='main'}).length;
+  var mainN = items.filter(function(i){return inGroup(i,'main')}).length, stopN = items.filter(function(i){ return i.stopped; }).length;
   document.getElementById('count').textContent = items.length;
   document.getElementById('order-hint').hidden = selecting || !items.length || !!query;
   document.querySelector('[data-f="main"]').textContent = '메인 ' + mainN;
-  document.querySelector('[data-f="side"]').textContent = '사이드 ' + (items.length - mainN);
+  document.querySelector('[data-f="side"]').textContent = '사이드 ' + (items.length - mainN - stopN);
   document.getElementById('selbar').hidden = !selecting;
   if (selecting) renderSelbar();
 
@@ -761,22 +794,25 @@ function render(){
   }
   var q = query.toLowerCase();
   var hit = function(i){ return !q || i.name.toLowerCase().indexOf(q) > -1; };
-  var mains = items.filter(function(i){ return i.kind==='main' && hit(i); }).sort(byOrder);
-  var sides = items.filter(function(i){ return i.kind==='side' && hit(i); }).sort(byOrder);
-  if (q && !mains.length && !sides.length){ grid.appendChild(emptyBox('"' + query + '"와(과) 맞는 이름이 없어요', '검색어를 줄여 보세요')); return; }
+  var mains = items.filter(function(i){ return inGroup(i,'main') && hit(i); }).sort(byOrder);
+  var sides = items.filter(function(i){ return inGroup(i,'side') && hit(i); }).sort(byOrder);
+  var stops = items.filter(function(i){ return i.stopped && hit(i); }).sort(byOrder);
+  if (q && !mains.length && !sides.length && !stops.length){ grid.appendChild(emptyBox('"' + query + '"와(과) 맞는 이름이 없어요', '검색어를 줄여 보세요')); return; }
   if (filter !== 'side') grid.appendChild(group('main', mains));
   if (filter !== 'main') grid.appendChild(group('side', sides));
+  if (filter === 'all' && stops.length) grid.appendChild(group('stop', stops));
 }
 
 function group(kind, list){
-  var g = el('section', {class:'group', 'aria-label': kind==='main' ? '메인' : '사이드'});
+  var GN = {main:'메인', side:'사이드', stop:'중단'}, GD = {main:'키우고 있는 것', side:'만들어 두고 쌓아 둔 것', stop:'멈춘 것 · 기록은 그대로'};
+  var g = el('section', {class:'group', 'aria-label': GN[kind]});
   var h = el('div', {class:'ghead'});
   var t = el('h3');
   t.appendChild(el('span', {class:'dot ' + kind, 'aria-hidden':'true'}));
-  t.appendChild(document.createTextNode(kind==='main' ? '메인 ' : '사이드 '));
+  t.appendChild(document.createTextNode(GN[kind] + ' '));
   t.appendChild(el('span', null, String(list.length)));
   h.appendChild(t);
-  h.appendChild(el('p', null, kind==='main' ? '키우고 있는 것' : '만들어 두고 쌓아 둔 것'));
+  h.appendChild(el('p', null, GD[kind]));
   h.appendChild(el('div', {class:'gline'}));
   g.appendChild(h);
   if (!list.length){
@@ -804,7 +840,7 @@ function nameNode(name, onOpen){
 }
 
 function card(it){
-  var cls = 'card' + (it.kind==='main' ? ' main' : '');
+  var cls = 'card' + (it.stopped ? ' stopped' : (it.kind==='main' ? ' main' : ''));
   if (selecting) cls += it.hidePf ? ' off' : (' pick' + (picked[it.id] ? ' picked' : ''));
   else cls += ' openable';
   var c = el('article', {class: cls, 'data-id': it.id});
@@ -826,7 +862,7 @@ function card(it){
   }
 
   var top = el('div', {class:'ctop'});
-  top.appendChild(el('span', {class:'badge ' + it.kind}, it.kind==='main' ? '메인' : '사이드'));
+  top.appendChild(el('span', {class:'badge ' + (it.stopped ? 'stop' : it.kind)}, it.stopped ? '중단함' : (it.kind==='main' ? '메인' : '사이드')));
   var tr0 = el('div', {class:'row', style:'align-items:center;gap:4px'});
   tr0.appendChild(el('span', {class:'date'}, it.date));
   if (!selecting && !query){
@@ -860,7 +896,12 @@ function card(it){
   ll.appendChild(document.createTextNode(manual ? ('작업 일지 ' + manual + ' · 마지막 ' + fmtAt(logs[0].at)) : '작업 일지 · 첫 기록을 남겨 보세요'));
   c.appendChild(ll);
 
-  if (it.kind === 'main'){
+  if (it.stopped){
+    var ws = el('div', {class:'why stopwhy'});
+    ws.appendChild(el('small', null, '중단한 이유'));
+    ws.appendChild(el('span', null, it.stopWhy || '안 적었어요'));
+    c.appendChild(ws);
+  } else if (it.kind === 'main'){
     var w = el('div', {class:'why'});
     w.appendChild(el('small', null, '메인으로 올린 이유'));
     w.appendChild(el('span', null, it.why || '아직 안 적었어요'));
@@ -874,15 +915,16 @@ function card(it){
 /* ---- 순서 바꾸기: 손잡이를 끌거나, 손잡이에서 방향키 ---- */
 function saveGroupOrder(kind, ids){
   ids.forEach(function(id, i){ var it = find(id); if (it) it.order = i; });
-  items.filter(function(i){ return i.kind === kind && ids.indexOf(i.id) < 0; }).forEach(function(i, n){ i.order = ids.length + n; });
+  items.filter(function(i){ return inGroup(i, kind) && ids.indexOf(i.id) < 0; }).forEach(function(i, n){ i.order = ids.length + n; });
   store.save(items);
 }
-function groupIds(kind){ return items.filter(function(i){ return i.kind === kind; }).sort(byOrder).map(function(i){ return i.id; }); }
+function groupIds(kind){ return items.filter(function(i){ return inGroup(i, kind); }).sort(byOrder).map(function(i){ return i.id; }); }
 function moveBy(it, d){
-  var ids = groupIds(it.kind), i = ids.indexOf(it.id), j = i + d;
+  var gk = it.stopped ? 'stop' : it.kind;
+  var ids = groupIds(gk), i = ids.indexOf(it.id), j = i + d;
   if (j < 0 || j >= ids.length) return;
   ids.splice(i, 1); ids.splice(j, 0, it.id);
-  saveGroupOrder(it.kind, ids); render();
+  saveGroupOrder(gk, ids); render();
   var ng = grid.querySelector('.card[data-id="' + it.id + '"] .grip'); if (ng) ng.focus();
   toast(j < i ? '위로 옮겼어요' : '아래로 옮겼어요');
 }
@@ -909,7 +951,7 @@ function wireGrip(g, it){
       card.classList.remove('dragging'); document.body.classList.remove('is-dragging');
       if (!moved) return;
       var ids = Array.prototype.slice.call(box.children).map(function(c){ return c.getAttribute('data-id'); }).filter(Boolean);
-      saveGroupOrder(it.kind, ids); render(); toast('순서를 바꿨어요');
+      saveGroupOrder(it.stopped ? 'stop' : it.kind, ids); render(); toast('순서를 바꿨어요');
     };
     document.addEventListener('pointermove', onMove); document.addEventListener('pointerup', onUp); document.addEventListener('pointercancel', onUp);
   });
@@ -920,7 +962,7 @@ function panel(it, type){
   var row = function(){ return el('div', {class:'row'}); };
   if (type === 'promote'){
     p.appendChild(el('p', null, '왜 이걸 메인으로 올려요?'));
-    var inp = el('input', {type:'text', maxlength:'120', placeholder:'예: 매일 쓰게 돼서, 친구들이 써 보고 싶대서', 'aria-label':'메인으로 올리는 이유'});
+    var inp = el('textarea', {class:'grow', rows:'2', placeholder:'예: 매일 쓰게 돼서, 친구들이 써 보고 싶대서', 'aria-label':'메인으로 올리는 이유'});
     p.appendChild(inp);
     var r = row();
     r.appendChild(el('button', {class:'btn sm primary', type:'button', onclick:function(){ promote(it.id, inp.value.trim()); }}, '메인으로 올리기'));
@@ -929,10 +971,10 @@ function panel(it, type){
     setTimeout(function(){ inp.focus(); }, 0);
   } else if (type === 'edit'){
     var n = el('input', {type:'text', maxlength:'40', 'aria-label':'이름'}); n.value = it.name;
-    var o = el('input', {type:'text', maxlength:'120', placeholder:'한 줄: 뭐고, 왜 만들었어요?', 'aria-label':'한 줄'}); o.value = it.one;
+    var o = el('textarea', {class:'grow', rows:'2', placeholder:'왜 만들었어요?', 'aria-label':'왜 만들었나요'}); o.value = it.one; setTimeout(function(){ autoGrow(o); }, 0);
     p.appendChild(n); p.appendChild(o);
     var y = null;
-    if (it.kind === 'main'){ y = el('input', {type:'text', maxlength:'120', placeholder:'메인으로 올린 이유', 'aria-label':'메인으로 올린 이유'}); y.value = it.why; p.appendChild(y); }
+    if (it.kind === 'main'){ y = el('textarea', {class:'grow', rows:'2', placeholder:'메인으로 올린 이유', 'aria-label':'메인으로 올린 이유'}); y.value = it.why; setTimeout(function(){ autoGrow(y); }, 0); p.appendChild(y); }
     p.appendChild(el('span', {class:'hint'}, '링크는 "+ 링크"와 "링크 관리"에서 바꿔요'));
     var r2 = row();
     r2.appendChild(el('button', {class:'btn sm primary', type:'button', onclick:function(){
@@ -941,6 +983,16 @@ function panel(it, type){
     r2.appendChild(el('button', {class:'btn sm', type:'button', onclick:closeDPanel}, '취소'));
     p.appendChild(r2);
     setTimeout(function(){ (it.one ? n : o).focus(); }, 0);
+  } else if (type === 'stop'){
+    p.appendChild(el('p', null, '왜 중단하나요?'));
+    p.appendChild(el('span', {class:'hint'}, '멈춘 이유도 좋은 기록이에요. 나중에 포트폴리오에서 "왜 멈췄는지"로 쓰여요'));
+    var sw = el('textarea', {class:'grow', rows:'2', placeholder:'예: 비슷한 서비스가 이미 잘하고 있어서 / 메인에 집중하려고 / 사용자 반응이 없어서', 'aria-label':'중단하는 이유'});
+    p.appendChild(sw);
+    var rs = row();
+    rs.appendChild(el('button', {class:'btn sm danger', type:'button', onclick:function(){ stopP(it.id, sw.value.trim()); }}, '중단하기'));
+    rs.appendChild(el('button', {class:'btn sm', type:'button', onclick:closeDPanel}, '취소'));
+    p.appendChild(rs);
+    setTimeout(function(){ sw.focus(); }, 0);
   } else if (type === 'delete'){
     p.appendChild(el('p', null, '"' + it.name + '"을(를) 지울까요? 작업 일지와 링크도 같이 지워져요.'));
     var r3 = row();
@@ -957,6 +1009,8 @@ function toggle(id, type){ openPanel = (openPanel.id===id && openPanel.type===ty
 function close(){ openPanel = {id:null,type:null}; render(); }
 function find(id){ for (var i=0;i<items.length;i++) if (items[i].id===id) return items[i]; }
 function promote(id, why){ var it=find(id); it.kind='main'; it.order = topOrder('main'); it.why=why; addLog(it, why ? 'up' : 'auto', why || '메인으로 올림'); commit('메인으로 올렸어요'); }
+function stopP(id, why){ var it = find(id); it.stopped = true; it.stopWhy = why; it.order = topOrder('stop'); addLog(it, 'stop', why || '이유는 안 적었어요'); commit('중단했어요. 기록은 그대로 남아요'); }
+function resumeP(id){ var it = find(id); it.stopped = false; it.order = topOrder(it.kind); addLog(it, 'resume', '다시 시작함'); commit('다시 시작했어요'); }
 function demote(id){ var it=find(id); it.kind='side'; it.order = topOrder('side'); addLog(it, 'auto', '사이드로 내림'); commit('사이드로 내렸어요. 올린 이유는 남겨 둘게요'); }
 function update(id, patch){
   var it=find(id);
@@ -966,7 +1020,8 @@ function update(id, patch){
   for (var k in patch) it[k]=patch[k];
   commit('저장했어요');
 }
-function topOrder(kind){ return items.filter(function(i){ return i.kind===kind; }).reduce(function(m,i){ return Math.min(m, i.order == null ? 0 : i.order); }, 0) - 1; }
+function inGroup(i, kind){ return kind === 'stop' ? !!i.stopped : (!i.stopped && i.kind === kind); }
+function topOrder(kind){ return items.filter(function(i){ return inGroup(i, kind); }).reduce(function(m,i){ return Math.min(m, i.order == null ? 0 : i.order); }, 0) - 1; }
 function remove(id){ items = items.filter(function(i){return i.id!==id}); commit('지웠어요'); }
 function addLink(it, kind, url, title){
   it.links = it.links || [];
@@ -1038,7 +1093,7 @@ document.getElementById('add-form').addEventListener('submit', function(ev){
   resetQuick(); closeNew(); filter='all'; syncTabs();
   commit(josa(name, '을를') + ' 사이드 프로젝트로 올렸어요');
 });
-function resetQuick(){ flt.value=''; fu.value=''; fn.value=''; fo.value=''; setErr(''); refreshQuick(); }
+function resetQuick(){ flt.value=''; fu.value=''; fn.value=''; fo.value=''; fo.style.height=''; setErr(''); refreshQuick(); }
 fu.addEventListener('input', function(){ setErr(''); refreshQuick(); });
 [fn, fo].forEach(function(x){ x.addEventListener('input', function(){ setErr(''); }); });
 
@@ -1080,7 +1135,8 @@ function toast(m){ toastEl.textContent=m; toastEl.hidden=false; clearTimeout(tt)
 document.getElementById('share-btn').addEventListener('click', function(){ toast('공유는 공개 주소(아이디)를 정할 때 열려요'); });
 
 /* ===== 작업 일지 창 (프로젝트 하나): 작업만 ===== */
-var detailId = null, aiKind = 'port', logType = 'decide', dPanel = null, linkEdit = false, linkAdd = false, dLink = null, dFilter = null;
+var openRow = null, rowEdit = false;
+var detailId = null, aiKind = 'port', logType = 'log', dPanel = null, linkEdit = false, linkAdd = false, dLink = null, dFilter = null;
 function linkLabel(it, k){
   if (!k) return '';
   if (k.title) return k.title;
@@ -1098,7 +1154,7 @@ var dMenu = document.getElementById('d-menu'), dMore = document.getElementById('
 var detailY = 0;
 function openDetail(id, view, panelType){
   if (detailEl.hidden) detailY = window.scrollY;
-  detailId = id; dPanel = panelType || null; linkEdit = false; dLink = null; dFilter = null; detailEl.hidden = false; renderDetail();
+  detailId = id; dPanel = panelType || null; linkEdit = false; dLink = null; dFilter = null; openRow = null; rowEdit = false; resetDate(); detailEl.hidden = false; renderDetail();
   document.getElementById('home').hidden = true; document.getElementById('app').hidden = true; window.scrollTo(0,0); syncBack();
   setTimeout(function(){ if (!dPanel) logText.focus(); }, 30);
 }
@@ -1123,13 +1179,16 @@ function hhmm(iso){ var d = new Date(iso); return pad(d.getHours()) + ':' + pad(
 
 function renderDetail(){
   var it = find(detailId); if (!it){ closeDetail(); return; }
-  var b = document.getElementById('d-badge'); b.className = 'badge ' + it.kind; b.textContent = it.kind==='main' ? '메인' : '사이드';
+  var b = document.getElementById('d-badge'); b.className = 'badge ' + (it.stopped ? 'stop' : it.kind); b.textContent = it.stopped ? '중단함' : (it.kind==='main' ? '메인' : '사이드');
   document.getElementById('d-name').textContent = it.name;
+  document.getElementById('d-q').textContent = plainName(it.name) + '에 무슨 일이 있었나요?';
   var one = document.getElementById('d-one'); one.textContent = it.one || ''; one.hidden = !it.one;
 
   // 관리 메뉴 문구
   document.getElementById('dm-promote').textContent = it.kind === 'side' ? '↑ 메인으로 올리기' : '사이드로 내리기';
   document.getElementById('dm-hide').textContent = it.hidePf ? '포트폴리오에 다시 넣기' : '포트폴리오에서 빼기';
+  document.getElementById('dm-stop').textContent = it.stopped ? '▶ 다시 시작하기' : '■ 중단하기';
+  document.getElementById('dm-promote').hidden = !!it.stopped;
 
   // 펼친 패널 (메인 승격 이유, 수정, 삭제 확인)
   var pn = document.getElementById('d-panel'); pn.textContent = '';
@@ -1167,19 +1226,8 @@ function renderDetail(){
     ul.appendChild(li);
   });
 
-  // 어디를 작업했나: 등록한 링크 제목이 그대로 선택지가 돼요
-  if (dLink && !(it.links || []).some(function(k){ return k.id === dLink; })) dLink = null;
-  if (!dLink) dLink = defaultLink(it);
-  if (dFilter && !(it.links || []).some(function(k){ return k.id === dFilter; })) dFilter = null;
-  var wh = document.getElementById('d-where'); wh.textContent = '';
-  if (ls.length){
-    wh.appendChild(el('span', {class:'barlabel'}, '어디를?'));
-    var opt = function(id, label){
-      wh.appendChild(el('button', {class:'wchip', type:'button', role:'radio', 'aria-checked': String(dLink === id), onclick:function(){ dLink = id; renderDetail(); logText.focus(); }}, label));
-    };
-    ls.forEach(function(k){ opt(k.id, linkLabel(it, k)); });
-  }
-  wh.hidden = !ls.length;
+  // 기록은 링크별로 나누지 않고 프로젝트 전체로 담아요
+  dLink = null; dFilter = null;
 
   // 작업 일지: 날짜별로 묶어서
   var logs = sortedLogs(it);
@@ -1198,16 +1246,49 @@ function renderDetail(){
   logs.forEach(function(l){
     var dl = dayLabel(l.at);
     if (dl !== lastDay){ tl.appendChild(el('li', {class:'tday'}, dl)); lastDay = dl; }
-    var li = el('li', {class: 'trow' + (l.type==='auto' ? ' auto' : '')});
-    li.appendChild(el('span', {class:'t-at'}, hhmm(l.at)));
-    li.appendChild(el('span', {class:'t-type ' + l.type}, TYPE_LABEL[l.type] || l.type));
+    var editable = l.type !== 'auto';
+    var li = el('li', {class: 'trow' + (l.type==='auto' ? ' auto' : '') + (l.star ? ' star' : '') + (editable ? ' click' : '') + (openRow === l.id ? ' open' : '')});
+    if (editable){
+      li.tabIndex = 0; li.setAttribute('role', 'button'); li.setAttribute('aria-expanded', String(openRow === l.id));
+      li.addEventListener('click', function(e){ if (e.target.closest('.t-link')) return; openRow = openRow === l.id ? null : l.id; rowEdit = false; renderDetail(); });
+      li.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); li.click(); } });
+    }
+    li.appendChild(el('span', {class:'t-at'}, isLate(l) ? '' : hhmm(l.at)));
+    li.appendChild(el('span', {class:'t-type ' + (isNote(l) ? 'note' : l.type)}, l.star ? '★ 강조' : (isNote(l) ? '' : (TYPE_LABEL[l.type] || l.type))));
     var tt = el('span', {class:'t-text'});
     var lk = l.linkId && ls.filter(function(k){ return k.id === l.linkId; })[0];
-    if (lk && !dFilter && ls.length > 1) tt.appendChild(el('button', {class:'t-link', type:'button', title:'이 링크 기록만 보기', onclick:function(){ dFilter = lk.id; renderDetail(); }}, linkLabel(it, lk)));
     tt.appendChild(document.createTextNode(l.text));
+    if (isLate(l)) tt.appendChild(el('span', {class:'t-wrote', title:'실제로 쓴 날은 바꿀 수 없어요'}, mdLabel(l.wrote) + '에 기록'));
     li.appendChild(tt);
     tl.appendChild(li);
+    if (openRow === l.id) tl.appendChild(rowActions(it, l));
   });
+}
+function rowActions(it, l){
+  var box = el('li', {class:'tact'});
+  if (rowEdit){
+    var ta = el('textarea', {class:'grow', rows:'2', 'aria-label':'기록 고치기'}); ta.value = l.text;
+    box.appendChild(ta);
+    var r = el('div', {class:'row'});
+    r.appendChild(el('button', {class:'btn sm primary', type:'button', onclick:function(){
+      var v = ta.value.trim(); if (!v){ ta.focus(); return; }
+      l.text = v; openRow = null; rowEdit = false; commitKeep('고쳤어요');
+    }}, '저장'));
+    r.appendChild(el('button', {class:'btn sm', type:'button', onclick:function(){ rowEdit = false; renderDetail(); }}, '취소'));
+    box.appendChild(r);
+    setTimeout(function(){ autoGrow(ta); ta.focus(); }, 0);
+    return box;
+  }
+  var r2 = el('div', {class:'row'});
+  r2.appendChild(el('button', {class:'btn sm' + (l.star ? '' : ' primary'), type:'button', onclick:function(){
+    l.star = !l.star; openRow = null; commitKeep(l.star ? '강조했어요 · 포트폴리오에 꼭 들어가요' : '강조를 뺐어요');
+  }}, l.star ? '☆ 강조 취소' : '★ 강조하기'));
+  r2.appendChild(el('button', {class:'btn sm', type:'button', onclick:function(){ rowEdit = true; renderDetail(); }}, '글 고치기'));
+  r2.appendChild(el('button', {class:'mini danger-t', type:'button', onclick:function(){
+    it.logs = it.logs.filter(function(x){ return x.id !== l.id; }); openRow = null; commitKeep('기록을 지웠어요');
+  }}, '지우기'));
+  box.appendChild(r2);
+  return box;
 }
 // 창 안에서 바꿀 때는 링크 관리/추가 상태를 유지
 function commitKeep(msg){ var e = linkEdit; commit(msg); linkEdit = e; if (detailId) renderDetail(); }
@@ -1224,6 +1305,10 @@ document.getElementById('dm-hide').addEventListener('click', function(){
   commit(it.hidePf ? '포트폴리오에서 빼 둘게요' : '포트폴리오에 다시 넣었어요');
 });
 document.getElementById('dm-delete').addEventListener('click', function(){ closeMenu(); dPanel = 'delete'; renderDetail(); });
+document.getElementById('dm-stop').addEventListener('click', function(){
+  closeMenu(); var it = find(detailId);
+  if (it.stopped){ resumeP(it.id); } else { dPanel = 'stop'; renderDetail(); }
+});
 
 var ltEl = document.getElementById('link-title');
 document.getElementById('lp-done').addEventListener('click', function(){ linkEdit = false; renderDetail(); });
@@ -1234,25 +1319,37 @@ document.getElementById('link-form').addEventListener('submit', function(e){
   var kind = guessKind(url), title = ltEl.value.trim();
   if (!title){ toast('링크 제목을 써 주세요 (예: 웹사이트)'); ltEl.focus(); return; }
   var k = addLink(find(detailId), kind, url, title); u.value = ''; ltEl.value = '';
-  dLink = k.id;
   commitKeep('‘' + title + '’ 링크를 넣었어요');
 });
 document.getElementById('d-close').addEventListener('click', closeDetail);
-document.querySelectorAll('.type').forEach(function(t){
-  t.addEventListener('click', function(){
-    logType = t.dataset.t;
-    document.querySelectorAll('.type').forEach(function(x){ x.setAttribute('aria-checked', x===t ? 'true':'false'); });
-    logText.placeholder = { decide:'오늘 뭘 정했어요?', fix:'뭘 고쳤어요?', add:'뭘 새로 넣었어요?' }[logType];
-    logText.focus();
-  });
+var logStar = false, starBtn = document.getElementById('log-star'), dateEl = document.getElementById('log-date');
+function todayStr(){ var d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()); }
+function dayStr(iso){ var d = new Date(iso); return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()); }
+function resetDate(){ dateEl.max = todayStr(); dateEl.value = todayStr(); syncDate(); }
+function syncDate(){ dateEl.parentNode.classList.toggle('past', dateEl.value && dateEl.value !== todayStr()); }
+dateEl.addEventListener('change', function(){
+  if (!dateEl.value || dateEl.value > todayStr()){ dateEl.value = todayStr(); toast('앞으로의 날짜는 고를 수 없어요'); }
+  syncDate();
+});
+function isLate(l){ return l.wrote && dayStr(l.wrote) !== dayStr(l.at); }
+function setLogStar(v){ logStar = v; starBtn.setAttribute('aria-pressed', String(v)); starBtn.firstChild.textContent = v ? '★' : '☆'; }
+starBtn.addEventListener('click', function(){ setLogStar(!logStar); logText.focus(); });
+function autoGrow(t){ t.style.height = 'auto'; t.style.height = (t.scrollHeight + 2) + 'px'; }
+document.addEventListener('input', function(e){ if (e.target.classList && e.target.classList.contains('grow')) autoGrow(e.target); });
+logText.addEventListener('keydown', function(e){
+  if (e.key === 'Enter' && !e.shiftKey && !e.isComposing){ e.preventDefault(); document.getElementById('log-form').requestSubmit(); }
 });
 document.getElementById('log-form').addEventListener('submit', function(e){
   e.preventDefault();
   var t = logText.value.trim();
-  if (!t){ logErr.textContent = '한 줄을 적어 주세요'; logErr.hidden = false; logText.focus(); return; }
-  addLog(find(detailId), logType, t, dLink);
-  logText.value = ''; logErr.hidden = true;
-  commit('남겼어요 · ' + fmtAt(nowISO()));
+  if (!t){ logErr.textContent = '오늘 한 일을 적어 주세요'; logErr.hidden = false; logText.focus(); return; }
+  var nl = addLog(find(detailId), 'log', t, null, logStar);
+  nl.wrote = nl.at;
+  var pick = dateEl.value || todayStr();
+  if (pick !== todayStr()){ var n = new Date(); nl.at = new Date(pick + 'T' + pad(n.getHours()) + ':' + pad(n.getMinutes()) + ':' + pad(n.getSeconds())).toISOString(); }
+  var wasStar = logStar;
+  logText.value = ''; autoGrow(logText); logErr.hidden = true; setLogStar(false);
+  commit((wasStar ? '강조해서 남겼어요 · ' : '남겼어요 · ') + (pick !== todayStr() ? mdLabel(nl.at) + ' 기록으로' : fmtAt(nowISO())));
   logText.focus();
 });
 logText.addEventListener('input', function(){ logErr.hidden = true; });
@@ -1263,8 +1360,10 @@ function collect(it){
   var pick = function(t){ return asc.filter(function(l){ return l.type===t; }).map(function(l){ return l.text; }); };
   var why = pick('why'); if (!why.length && it.one) why = [it.one];
   var up = pick('up'); if (!up.length && it.why) up = [it.why];
-  var made = asc.filter(function(l){ return l.type==='add' || l.type==='fix'; }).map(function(l){ return (l.type==='fix' ? '(수정) ' : '') + l.text; });
-  return { why: why, decide: pick('decide'), made: made, up: up, start: asc.length ? fmtDay(asc[0].at) : it.date, last: asc.length ? asc[asc.length-1] : null };
+  var made = asc.filter(function(l){ return isNote(l) && !l.star; }).map(function(l){ return l.text; });
+  var starred = asc.filter(function(l){ return l.star; }).map(function(l){ return l.text; });
+  var stopL = asc.filter(function(l){ return l.type === 'stop'; }).map(function(l){ return l.text; });
+  return { stop: stopL, why: why, decide: starred, made: made, up: up, start: asc.length ? fmtDay(asc[0].at) : it.date, last: asc.length ? asc[asc.length-1] : null };
 }
 
 /* ---- 자서전처럼: 기록을 시간 순서대로 이야기로 잇기 ---- */
@@ -1365,12 +1464,12 @@ function buildStoryMixed(box, list){
     lines.push('');
   });
 
-  var dN = ev.filter(function(e){ return e.l.type==='decide'; }).length;
-  var mN = ev.filter(function(e){ return e.l.type==='add' || e.l.type==='fix'; }).length;
+  var dN = ev.filter(function(e){ return e.l.star; }).length;
+  var mN = ev.filter(function(e){ return isNote(e.l); }).length;
   var mains = list.filter(function(it){ return it.kind==='main'; }).length;
   var wrap2 = el('div', {class:'proj'}); box.appendChild(wrap2);
   wrap2.appendChild(el('h4', {class:'chap'}, '돌아보며')); lines.push('돌아보며');
-  P(wrap2, '이것저것 오가며 ' + list.length + '개를 만들었고, ' + dN + '번 판단했고, ' + mN + '번 만들고 고쳤다. 그중 ' + mains + '개는 메인으로 키우고 있다.');
+  P(wrap2, '이것저것 오가며 ' + list.length + '개를 만들었고, 기록 ' + mN + '개를 남겼고, 그중 ' + dN + '개를 강조했다. 프로젝트 중 ' + mains + '개는 메인으로 키우고 있다.');
   wrap2.appendChild(el('p', {class:'thin'}, '실제 버전에선 AI가 이 기록만 가지고 문장을 다듬고, 오가는 흐름 속에서 반복되는 나만의 판단 방식을 찾아 마지막 문단을 써요.'));
   drafts[box.id] = lines.join('\n').replace(/\n{3,}/g,'\n\n').trim();
 }
@@ -1387,13 +1486,13 @@ function buildStory(box, list, single){
     return { it: it, name: plainName(it.name), ls: ls,
       start: ls.length ? ls[0].at : '', end: ls.length ? ls[ls.length-1].at : '',
       why: ls.filter(function(l){ return l.type==='why'; })[0],
-      dec: ls.filter(function(l){ return l.type==='decide'; }),
-      made: ls.filter(function(l){ return l.type==='add' || l.type==='fix'; }),
-      fix: ls.filter(function(l){ return l.type==='fix'; }).length,
+      dec: ls.filter(function(l){ return l.star; }),
+      made: ls.filter(function(l){ return isNote(l) && !l.star; }),
+      fix: 0,
       up: ls.filter(function(l){ return l.type==='up'; })[0] };
   }).filter(function(p){ return p.ls.length; });
   if (!projects.some(function(p){ return p.dec.length || p.made.length; })){
-    box.appendChild(el('p', {class:'thin'}, '기록이 아직 적어요. 작업 일지에 판단·수정·추가를 몇 줄 남기면 여기서 이야기가 만들어져요.'));
+    box.appendChild(el('p', {class:'thin'}, '기록이 아직 적어요. 작업 일지에 몇 줄 남기면 여기서 이야기가 만들어져요.'));
     drafts[box.id] = ''; return;
   }
 
@@ -1401,19 +1500,19 @@ function buildStory(box, list, single){
     var out = [];
     if (p.why){ out.push(josa(p.name, '은는') + ' ' + q(p.why.text) + '라는 이유로 시작했습니다.'); used++; }
     else if (p.it.one) out.push(josa(p.name, '은는') + ' ' + q(p.it.one) + '를 목표로 시작했습니다.');
-    var ds = short ? p.dec.slice(0, 2) : p.dec.slice(0, 3);
-    if (ds.length){
-      var dq = ds.map(function(d){ return q(d.text); }).join(', ');
-      out.push(p.dec.length > ds.length
-        ? '만들면서 ' + dq + '를 포함해 모두 ' + p.dec.length + '번의 결정을 직접 내렸습니다.'
-        : '만들면서 ' + dq + ' 같은 결정을 직접 내렸습니다.');
+    if (p.dec.length){
+      // 강조한 기록은 하나도 빼지 않는다
+      var dq = p.dec.map(function(d){ return q(d.text); }).join(', ');
+      out.push('만들면서 가장 중요했던 순간은 ' + dq + (p.dec.length > 1 ? '입니다.' : '입니다.'));
       used += p.dec.length;
     }
     if (p.made.length > 1){
       out.push(p.made.length + '번 만들고 고치면서, ' + q(p.made[0].text) + '에서 시작해 ' + q(p.made[p.made.length-1].text) + '까지 왔습니다.' + (p.fix ? ' 그중 ' + p.fix + '번은 만든 것을 다시 고친 기록입니다.' : ''));
       used += p.made.length;
     } else if (p.made.length === 1){ out.push('지금까지 ' + q(p.made[0].text) + '를 만들었습니다.'); used++; }
-    if (p.up){ out.push(q(p.up.text) + ' — 그래서 메인 프로젝트로 키우기로 했습니다.'); used++; }
+    var stp = p.ls.filter(function(l){ return l.type === 'stop'; }).slice(-1)[0];
+    if (p.it.stopped && stp){ out.push(q(stp.text) + ' — 그래서 여기서 멈추기로 했습니다.'); used++; }
+    else if (p.up){ out.push(q(p.up.text) + ' — 그래서 메인 프로젝트로 키우기로 했습니다.'); used++; }
     else if (p.it.kind === 'side' && !short) out.push('아직은 사이드로 두고 조금씩 이어 가고 있습니다.');
     return out.join(' ');
   }
@@ -1458,7 +1557,7 @@ function buildStory(box, list, single){
     var dN = projects.reduce(function(n,p){ return n + p.dec.length; }, 0);
     var mN = projects.reduce(function(n,p){ return n + p.made.length; }, 0);
     var w3 = el('div', {class:'proj'}); box.appendChild(w3);
-    P(w3, '지금까지 남긴 판단은 ' + dN + '개, 만들고 고친 기록은 ' + mN + '개입니다. 모두 만들면서 그때그때 제가 직접 남긴 기록입니다.', 'st end');
+    P(w3, '지금까지 남긴 기록은 ' + (dN + mN) + '개, 그중 제가 강조한 것은 ' + dN + '개입니다. 모두 만들면서 그때그때 제가 직접 남긴 기록입니다.', 'st end');
   }
   box.appendChild(el('p', {class:'thin'}, '이 글은 작업 일지 ' + used + '줄만 가지고 썼어요. 적지 않은 내용은 넣지 않아요. 실제 AI를 붙이면 같은 기록으로 문장을 더 자연스럽게 다듬어요.'));
   drafts[box.id] = lines.join('\n').replace(/\n{3,}/g,'\n\n').trim();
@@ -1487,7 +1586,7 @@ function buildDraft(box, list, kind, single){
     list.forEach(function(it){ var s = collect(it); dN += s.decide.length; mN += s.made.length; if (it.kind==='main') mains++; });
     var head = kind === 'port' ? myName() + '님이 만든 것들' : '나는 이렇게 만들고 판단합니다';
     add(box, el('h3', null, head), head);
-    var sum = '프로젝트 ' + list.length + '개 (메인 ' + mains + ' · 사이드 ' + (list.length - mains) + ') · 기록한 판단 ' + dN + '개 · 만들고 고친 것 ' + mN + '개';
+    var sum = '프로젝트 ' + list.length + '개 (메인 ' + mains + ' · 사이드 ' + (list.length - mains) + ') · 강조 ' + dN + '개 · 기록 ' + (dN + mN) + '개';
     add(box, el('p', {class:'sum'}, sum), sum); lines.push('');
   }
 
@@ -1500,8 +1599,9 @@ function buildDraft(box, list, kind, single){
       add(wrap, el('h3', null, it.name), (single ? '' : '■ ') + it.name);
       add(wrap, el('p', {class:'dmeta2'}, meta), meta); lines.push('');
       sec(wrap, '시작한 이유', s.why);
-      sec(wrap, '주요 판단', s.decide);
-      sec(wrap, '만들고 고친 것', s.made);
+      sec(wrap, '★ 강조한 기록', s.decide);
+      sec(wrap, '작업 기록', s.made);
+      if (s.stop.length) sec(wrap, '중단한 이유', s.stop);
       sec(wrap, '키운 이유', s.up);
       var others = (it.links || []).filter(function(k){ return !pl || k.id !== pl.id; }).map(function(k){ return linkLabel(it, k) + ' · ' + short(k.url); });
       sec(wrap, '관련 링크', others);
@@ -1510,8 +1610,9 @@ function buildDraft(box, list, kind, single){
       add(wrap, el('h3', null, t), (single ? '' : '■ ') + t);
       add(wrap, el('p', {class:'dmeta2'}, (single ? it.name + ' · ' : '') + s.start + '부터'), s.start + '부터'); lines.push('');
       sec(wrap, '상황 · 왜 시작했나', s.why);
-      sec(wrap, '내가 내린 판단', s.decide);
-      sec(wrap, '행동 · 만들고 고친 것', s.made);
+      sec(wrap, '★ 강조한 기록', s.decide);
+      sec(wrap, '작업 기록', s.made);
+      if (s.stop.length) sec(wrap, '중단한 이유', s.stop);
       sec(wrap, '결과', s.up.length ? s.up : (s.last ? ['지금도 진행 중 (마지막 기록: ' + s.last.text + ')'] : []));
     }
   });
@@ -1520,8 +1621,8 @@ function buildDraft(box, list, kind, single){
     var all = [];
     list.forEach(function(it){ collect(it).decide.forEach(function(d){ all.push(it.name + ' — ' + d); }); });
     var wrap2 = el('div', {class:'proj'}); box.appendChild(wrap2);
-    sec(wrap2, '여러 프로젝트에 걸친 판단 모아 보기', all);
-    add(wrap2, el('p', {class:'thin'}, '실제 버전에선 AI가 이 판단들에서 반복되는 방식(예: 직접 써 보며 고친다)을 찾아 한 문단으로 정리해요.'));
+    sec(wrap2, '프로젝트별 강조한 기록 모아 보기', all);
+    add(wrap2, el('p', {class:'thin'}, '실제 버전에선 AI가 강조한 기록을 빠짐없이 넣고, 그 안에서 반복되는 방식을 찾아 한 문단으로 정리해요.'));
   }
   drafts[box.id] = lines.join('\n').replace(/\n{3,}/g,'\n\n').trim();
 }
@@ -1603,9 +1704,9 @@ function refreshAIButtons(){
 function storyPrompt(list){
   var rows = [];
   list.forEach(function(it){
-    rows.push('[프로젝트] ' + plainName(it.name) + ' (' + (it.kind === 'main' ? '메인' : '사이드') + ')' + (it.one ? ' — 한 줄 소개: ' + it.one : ''));
+    rows.push('[프로젝트] ' + plainName(it.name) + ' (' + (it.stopped ? '중단함' : (it.kind === 'main' ? '메인' : '사이드')) + ')' + (it.one ? ' — 한 줄 소개: ' + it.one : ''));
     (it.logs || []).filter(function(l){ return l.type !== 'auto'; }).sort(function(a,b){ return a.at < b.at ? -1 : 1; })
-      .forEach(function(l){ var k = l.linkId && (it.links || []).filter(function(x){ return x.id === l.linkId; })[0]; rows.push('- ' + fmtDay(l.at) + ' | ' + TYPE_LABEL[l.type] + (k ? ' | ' + linkLabel(it, k) : '') + ' | ' + l.text); });
+      .forEach(function(l){ var k = l.linkId && (it.links || []).filter(function(x){ return x.id === l.linkId; })[0]; rows.push('- ' + fmtDay(l.at) + ' | ' + (l.star ? '★강조' : (TYPE_LABEL[l.type] || '기록')) + ' | ' + l.text); });
     rows.push('');
   });
   return [
@@ -1613,9 +1714,10 @@ function storyPrompt(list){
     '',
     '반드시 지킬 것:',
     '- 기록에 없는 사실, 숫자, 성과, 반응, 감정, 사람은 절대 지어내지 마. 추측도 하지 마.',
+    '- ★강조 표시가 붙은 기록은 하나도 빠짐없이 전부 글에 넣고, 글의 중심으로 삼아.',
     '- 한 줄 기록을 자연스러운 문장으로 풀어 쓰되, 뜻을 부풀리거나 과장하지 마.',
     '- 1인칭 "저는", 습니다체. 자기소개 글처럼 읽히게.',
-    '- 날짜를 나열하거나 일기처럼 쓰지 마. 왜 시작했는지 → 어떤 판단을 했는지 → 무엇을 만들고 고쳤는지 → 왜 키웠는지의 흐름으로.',
+    '- 날짜를 나열하거나 일기처럼 쓰지 마. 왜 시작했는지 → 무엇을 중요하게 판단했는지(★강조) → 무엇을 만들고 고쳤는지 → 왜 키웠는지(중단했다면 왜 멈췄는지)의 흐름으로.',
     '- 프로젝트가 여러 개면 따로따로 소개하지 말고, 서로 오가며 만든 흐름으로 자연스럽게 엮어.',
     '- 여러 프로젝트에서 반복되는 판단 방식이 기록에 분명히 드러날 때만 마지막 문단에서 짚어. 분명하지 않으면 쓰지 마.',
     '- 제목 없이 본문만. 문단 3~6개, 문단 사이 빈 줄 하나. 마크다운, 목록, 따옴표 강조 쓰지 마.',
