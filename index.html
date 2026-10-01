@@ -9,6 +9,7 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/manifest.webmanifest">
 <meta name="theme-color" content="#6a3df0">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
@@ -350,6 +351,19 @@ textarea.grow{resize:none;line-height:1.5;overflow:hidden;font-family:inherit}
 .ldate input{height:32px;padding:0 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);font:inherit;font-size:13px;font-weight:400}
 .ldate.past input{border-color:#e8c547;background:#fff8dc}
 .t-wrote{display:inline-block;margin-left:8px;font-size:11px;color:var(--faint);border:1px solid var(--line);border-radius:5px;padding:0 5px;white-space:nowrap}
+.npform{display:flex;flex-direction:column;gap:14px}
+.npform .qmore{display:flex;flex-direction:column;gap:14px;padding:0}
+.npform .field label{font-size:13px;font-weight:600;color:var(--fg);display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.req{font-style:normal;font-size:11px;font-weight:600;color:var(--accent);background:var(--accent-soft);padding:1px 6px;border-radius:5px}
+.opt{font-size:12px;font-weight:400;color:var(--faint)}
+.lpair{display:flex;gap:8px;flex-wrap:wrap}
+.lpair #f-ltitle{flex:0 1 170px}
+.lpair #f-url{flex:1 1 220px}
+.npfoot{display:flex;justify-content:flex-end}
+.menu button.leave-t{color:var(--faint);font-size:13px;border-top:1px solid var(--line);border-radius:0 0 7px 7px;margin-top:4px}
+.chk2{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--fg)}
+.sheet .lbl{font-size:13px;font-weight:600}
+.sheet .field{gap:6px}
 .timeline li.tfilter{display:block;border-top:0;font-size:12px;color:var(--muted);padding:4px 0 2px}
 #home .foot-links{margin:0}
 
@@ -460,6 +474,7 @@ button.brand{border:0;background:transparent;padding:0;font:inherit;font-weight:
         <div class="menu" id="menu" hidden>
           <div class="menu-who"><b id="me-name"></b><span id="me-mail">구글 계정으로 로그인됨</span></div>
           <button type="button" id="logout-btn">로그아웃</button>
+          <button type="button" id="leave-btn" class="leave-t">탈퇴하기</button>
         </div>
       </div>
     </div>
@@ -493,7 +508,7 @@ button.brand{border:0;background:transparent;padding:0;font:inherit;font-weight:
       <svg class="goarr" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg>
     </button>
   </div>
-  <p class="foot-links">개인정보처리방침 · 서비스 약관</p>
+  <p class="foot-links"><a href="/privacy.html">개인정보처리방침</a> · <a href="/terms.html">이용약관</a></p>
 </section>
 
 <div class="sheet-bg" id="sheet" hidden>
@@ -508,6 +523,21 @@ button.brand{border:0;background:transparent;padding:0;font:inherit;font-weight:
   </div>
 </div>
 
+<div class="sheet-bg" id="leave" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="leave-h">
+    <h2 id="leave-h">탈퇴할까요?</h2>
+    <p>탈퇴하면 계정과 함께 올린 프로젝트, 링크, 작업 일지가 <b>모두 바로 지워지고 되돌릴 수 없어요.</b></p>
+    <label class="field" for="leave-why"><span class="lbl">왜 떠나시나요? <span class="opt">선택</span></span>
+      <textarea id="leave-why" class="grow" rows="2" placeholder="더 나은 나로그를 만드는 데 써요. 이름 없이 이유만 남아요"></textarea>
+    </label>
+    <label class="chk2"><input type="checkbox" id="leave-ok"> 모든 기록이 지워진다는 걸 확인했어요</label>
+    <div class="row" style="gap:8px">
+      <button type="button" class="btn danger" id="leave-go" disabled>탈퇴하기</button>
+      <button type="button" class="btn" id="leave-cancel">취소</button>
+    </div>
+  </div>
+</div>
+
 <section class="newpage" id="newp" hidden>
   <div class="dsheet" aria-labelledby="newp-h">
     <button type="button" class="backbtn" id="newp-close" aria-label="이전 화면으로 돌아가기" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
@@ -516,41 +546,41 @@ button.brand{border:0;background:transparent;padding:0;font:inherit;font-weight:
         <span class="gok">담기</span>
         <p class="firstnote" id="newp-first" hidden>기록할 프로젝트가 아직 없어요. 먼저 만든 걸 올려 주세요</p>
         <h2 id="newp-h">새로 만든 게 있나요?</h2>
-        <p class="hint" style="margin:0">주소를 붙이고 왜 만들었는지 적어 주세요. 사이드 프로젝트로 올라가요.</p>
+        <p class="hint" style="margin:0">이름만 있어도 올라가요. 링크는 나중에 넣어도 돼요. 사이드 프로젝트로 올라가요.</p>
       </div>
     </div>
-    <form class="quick" id="add-form" novalidate>
-      <p class="qlabel" id="q-label">내가 만든 <b>웹 · 앱 · 아티팩트</b>의 주소 <span>예: 내사이트.vercel.app, claude.ai/artifact/…</span></p>
-      <div class="qrow">
-        <svg class="qicon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"></path><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"></path></svg>
-        <label for="f-url" class="sr">내가 만든 것의 주소</label>
-        <input class="qurl" type="url" id="f-url" aria-describedby="q-label" placeholder="내가 만든 것의 주소 붙여 넣기" autocomplete="off">
-        <button class="btn primary sm" type="submit" id="add-btn">프로젝트에 올리기</button>
+    <form class="npform" id="add-form" novalidate>
+      <div class="qmore" id="qmore">
+        <div class="field">
+          <label for="f-name">프로젝트 이름 <em class="req">필수</em></label>
+          <input type="text" id="f-name" maxlength="40" placeholder="예: 나로그" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="f-one">왜 만들었나요?</label>
+          <textarea id="f-one" class="grow" rows="2" placeholder="예: 내가 쓰려고, 친구가 불편하다고 해서. 길어도 괜찮아요"></textarea>
+        </div>
+      </div>
+      <div class="field">
+        <label for="f-url" id="q-label">링크 <span class="opt">선택 · 아직 없으면 비워 두고 나중에 넣어요</span></label>
+        <div class="lpair">
+          <input type="text" id="f-ltitle" maxlength="20" placeholder="제목 (예: 웹사이트)" autocomplete="off" aria-label="링크 제목">
+          <input class="url" type="url" id="f-url" placeholder="https://… 주소" autocomplete="off" aria-label="링크 주소">
+        </div>
+        <select id="f-kind" hidden aria-hidden="true" tabindex="-1"></select>
       </div>
       <div class="qmode" id="qmode" hidden>
         <div class="seg" role="radiogroup" aria-label="어디에 담을까요">
           <button type="button" role="radio" data-m="new" aria-checked="true">새 프로젝트로</button>
           <button type="button" role="radio" data-m="attach" aria-checked="false">기존 프로젝트에 링크 추가</button>
         </div>
-        <select id="f-kind" hidden aria-hidden="true" tabindex="-1"></select>
-        <label class="ltwrap" for="f-ltitle">링크 제목 <input type="text" id="f-ltitle" maxlength="20" placeholder="예: 웹사이트" autocomplete="off"></label>
         <span class="suggest" id="q-suggest" hidden></span>
-      </div>
-      <div class="qmore" id="qmore">
-        <div class="field">
-          <label for="f-name">이름</label>
-          <input type="text" id="f-name" maxlength="40" placeholder="비우면 주소로 채워요" autocomplete="off">
-        </div>
-        <div class="field">
-          <label for="f-one">왜 만들었나요?</label>
-          <textarea id="f-one" class="grow" rows="1" placeholder="예: 내가 쓰려고, 친구가 불편하다고 해서. 길어도 괜찮아요"></textarea>
-        </div>
       </div>
       <div class="qattach" id="qattach" hidden>
         <label for="f-proj">어느 프로젝트에?</label>
         <select id="f-proj"></select>
       </div>
       <span class="err" id="add-msg" hidden></span>
+      <div class="npfoot"><button class="btn primary" type="submit" id="add-btn">프로젝트 올리기</button></div>
     </form>
   </div>
 </section>
@@ -1051,7 +1081,7 @@ function setMode(m){
   addMode = m;
   document.querySelectorAll('#qmode [data-m]').forEach(function(b){ b.setAttribute('aria-checked', b.dataset.m===m ? 'true':'false'); });
   qmore.hidden = m !== 'new'; qattach.hidden = m !== 'attach';
-  addBtn.textContent = m === 'new' ? '프로젝트에 올리기' : '링크 추가';
+  addBtn.textContent = m === 'new' ? '프로젝트 올리기' : '링크 추가';
 }
 function matchProject(url){
   var h = hostOf(url); if (!h || GENERIC.indexOf(h) > -1) return null;
@@ -1075,11 +1105,11 @@ document.querySelectorAll('#qmode [data-m]').forEach(function(b){ b.addEventList
 
 document.getElementById('add-form').addEventListener('submit', function(ev){
   ev.preventDefault();
-  var url = fu.value.trim();
-  if (!url){ setErr('내가 만든 웹·앱·아티팩트의 주소를 먼저 붙여 넣어 주세요'); fu.focus(); return; }
-  if (!/^https?:\/\//i.test(url)){ setErr('주소는 http:// 또는 https:// 로 시작해야 해요'); fu.focus(); return; }
-  var kind = fk.value, ltitle = flt.value.trim();
-  if (!ltitle){ setErr('링크 제목을 써 주세요 (예: 웹사이트)'); flt.focus(); return; }
+  var url = fu.value.trim(), ltitle = flt.value.trim(), kind = url ? guessKind(url) : 'site';
+  if (addMode === 'new' && !fn.value.trim()){ setErr('프로젝트 이름을 적어 주세요'); fn.focus(); return; }
+  if (url && !/^https?:\/\//i.test(url)){ setErr('주소는 http:// 또는 https:// 로 시작해야 해요'); fu.focus(); return; }
+  if (url && !ltitle){ setErr('링크 제목도 써 주세요 (예: 웹사이트)'); flt.focus(); return; }
+  if (!url && ltitle){ setErr('링크 주소도 넣어 주세요. 링크가 없으면 제목을 비워 두세요'); fu.focus(); return; }
   if (addMode === 'attach'){
     var it = find(fp.value);
     if (!it){ setErr('링크를 넣을 프로젝트를 골라 주세요'); return; }
@@ -1088,10 +1118,9 @@ document.getElementById('add-form').addEventListener('submit', function(ev){
     return;
   }
   var name = fn.value.trim();
-  if (!name){ name = hostOf(url).replace(/^www\./,'') || '이름 없음'; }
   var one = fo.value.trim();
-  var k = K(kind, url, ltitle);
-  var fresh = { id: uid(), name: name, one: one, kind: 'side', why: '', date: today(), hidePf: false, links: [k], primary: k.id, logs: [] };
+  var k = url ? K(kind, url, ltitle) : null;
+  var fresh = { id: uid(), name: name, one: one, kind: 'side', why: '', date: today(), hidePf: false, links: k ? [k] : [], primary: k ? k.id : null, logs: [] };
   addLog(fresh, one ? 'why' : 'auto', one || '담음');
   fresh.order = topOrder('side');
   items.unshift(fresh);
@@ -1100,7 +1129,7 @@ document.getElementById('add-form').addEventListener('submit', function(ev){
 });
 function resetQuick(){ flt.value=''; fu.value=''; fn.value=''; fo.value=''; fo.style.height=''; setErr(''); refreshQuick(); }
 fu.addEventListener('input', function(){ setErr(''); refreshQuick(); });
-[fn, fo].forEach(function(x){ x.addEventListener('input', function(){ setErr(''); }); });
+[fn, fo, flt].forEach(function(x){ x.addEventListener('input', function(){ setErr(''); }); });
 
 document.addEventListener('paste', function(e){
   if (!loggedIn || selecting || !detailEl.hidden || !newpEl.hidden) return;
@@ -1118,7 +1147,7 @@ function openNew(url, first){
   document.getElementById('home').hidden = true; document.getElementById('app').hidden = true; window.scrollTo(0,0); syncBack();
   document.getElementById('newp-first').hidden = !first;
   if (url){ fu.value = url; refreshQuick(); }
-  setTimeout(function(){ (url ? (addMode === 'new' ? fn : fp) : fu).focus(); }, 30);
+  setTimeout(function(){ (url ? (addMode === 'new' ? fn : fp) : fn).focus(); }, 30);
 }
 function closeNew(){ newpEl.hidden = true; showState(); }
 document.getElementById('newp-close').addEventListener('click', function(){ resetQuick(); closeNew(); });
@@ -1789,13 +1818,13 @@ function showState(){
 function recentItem(){ return items.slice().sort(byRecent)[0] || null; }
 function renderHome(){
   if (!loggedIn){
-    document.getElementById('go-sub').textContent = '주소와 한 줄이면 프로젝트로 올라가요';
+    document.getElementById('go-sub').textContent = '이름만 있으면 프로젝트로 올라가요';
     document.getElementById('go-log-sub').textContent = '프로젝트마다 오늘 한 일을 한 줄씩';
     document.getElementById('go-pf-sub').textContent = '쌓인 한 줄들로 나의 포트폴리오 · 나의 이야기';
     return;
   }
   var m = items.filter(function(i){ return i.kind==='main'; }).length, r = recentItem();
-  document.getElementById('go-sub').textContent = '주소와 한 줄이면 프로젝트로 올라가요';
+  document.getElementById('go-sub').textContent = '이름만 있으면 프로젝트로 올라가요';
   document.getElementById('go-log-sub').textContent = items.length ? ('메인 ' + m + ' · 사이드 ' + (items.length - m) + (r ? ' · 최근 ' + plainName(r.name) : '')) : '먼저 만든 걸 올리면 여기서 기록해요';
   var elig = eligible().length;
   document.getElementById('go-pf-sub').textContent = elig ? '골라서 나의 포트폴리오 · 나의 이야기로' : '기록이 쌓이면 여기서 꺼내 써요';
@@ -1821,7 +1850,7 @@ document.getElementById('sheet-cancel').addEventListener('click', function(){ pe
 document.querySelectorAll('[data-login]').forEach(function(b){ b.addEventListener('click', openSheet); });
 document.getElementById('sheet-cancel').addEventListener('click', closeSheet);
 sheet.addEventListener('click', function(e){ if (e.target === sheet) closeSheet(); });
-document.addEventListener('keydown', function(e){ if (e.key === 'Escape'){ if (!sheet.hidden) closeSheet(); if (!menu.hidden){ menu.hidden = true; avBtn.setAttribute('aria-expanded','false'); } } });
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape'){ if (!sheet.hidden) closeSheet(); if (!leaveEl.hidden) closeLeave(); if (!menu.hidden){ menu.hidden = true; avBtn.setAttribute('aria-expanded','false'); } } });
 document.getElementById('acct-btn').addEventListener('click', async function(){
   try { if (pendingAct) sessionStorage.setItem('narog-after-login', pendingAct); } catch(e){}
   var r = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin } });
@@ -1829,6 +1858,35 @@ document.getElementById('acct-btn').addEventListener('click', async function(){
 });
 avBtn.addEventListener('click', function(e){ e.stopPropagation(); menu.hidden = !menu.hidden; avBtn.setAttribute('aria-expanded', String(!menu.hidden)); });
 document.addEventListener('click', function(e){ if (!menu.hidden && !menu.contains(e.target)){ menu.hidden = true; avBtn.setAttribute('aria-expanded','false'); } });
+var leaveEl = document.getElementById('leave'), leaveOk = document.getElementById('leave-ok'), leaveGo = document.getElementById('leave-go');
+function openLeave(){ menu.hidden = true; avBtn.setAttribute('aria-expanded','false'); leaveOk.checked = false; leaveGo.disabled = true; document.getElementById('leave-why').value = ''; leaveEl.hidden = false; }
+function closeLeave(){ leaveEl.hidden = true; }
+document.getElementById('leave-btn').addEventListener('click', openLeave);
+document.getElementById('leave-cancel').addEventListener('click', closeLeave);
+leaveEl.addEventListener('click', function(e){ if (e.target === leaveEl) closeLeave(); });
+leaveOk.addEventListener('change', function(){ leaveGo.disabled = !leaveOk.checked; });
+leaveGo.addEventListener('click', function(){
+  if (!leaveOk.checked) return;
+  leaveGo.disabled = true; leaveGo.textContent = '지우는 중…';
+  doLeave(document.getElementById('leave-why').value.trim()).then(function(ok){
+    leaveGo.textContent = '탈퇴하기';
+    if (ok){ closeLeave(); toast('탈퇴했어요. 그동안 써 주셔서 고마워요'); }
+    else { leaveGo.disabled = false; toast('탈퇴하지 못했어요. 잠시 후 다시 해 주세요'); }
+  });
+});
+/* LEAVE_IMPL_START */
+async function doLeave(reason){
+  try {
+    clearTimeout(saveTimer); await flush();
+    if (reason){ try { await sb.from('leave_reasons').insert({ reason: reason }); } catch(e){} }
+    var r = await sb.rpc('delete_my_account');
+    if (r.error) throw r.error;
+    try { await sb.auth.signOut({ scope: 'local' }); } catch(e){}
+    signedOut();
+    return true;
+  } catch(err){ console.error(err); return false; }
+}
+/* LEAVE_IMPL_END */
 document.getElementById('logout-btn').addEventListener('click', async function(){
   await flush();
   await sb.auth.signOut();
