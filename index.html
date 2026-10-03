@@ -617,7 +617,11 @@ button.brand{border:0;background:transparent;padding:0;font:inherit;font-weight:
           <input type="text" id="f-name" maxlength="40" placeholder="예: 나로그" autocomplete="off">
         </div>
         <div class="field">
-          <label for="f-one">왜 만들었나요?</label>
+          <label for="f-intro">한 줄 소개 <span class="opt">선택 · 무엇인지 짧게</span></label>
+          <input type="text" id="f-intro" maxlength="30" placeholder="예: 생활동선형 배송주소 플랫폼" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="f-one">왜 만들었나요? <span class="opt">선택</span></label>
           <textarea id="f-one" class="grow" rows="2" placeholder="예: 내가 쓰려고, 친구가 불편하다고 해서. 길어도 괜찮아요"></textarea>
         </div>
       </div>
@@ -659,7 +663,7 @@ button.brand{border:0;background:transparent;padding:0;font:inherit;font-weight:
           <button type="button" class="xbtn" id="d-more" aria-label="프로젝트 관리" aria-haspopup="true" aria-expanded="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg></button>
           <div class="menu" id="d-menu" hidden>
             <button type="button" id="dm-promote"></button>
-            <button type="button" id="dm-edit">이름·한 줄 수정</button>
+            <button type="button" id="dm-edit">이름·한 줄 소개 수정</button>
             <button type="button" id="dm-hide"></button>
             <button type="button" id="dm-stop"></button>
             <button type="button" id="dm-delete" class="danger-t">삭제</button>
@@ -974,6 +978,12 @@ function nameNode(name, onOpen){
   return h;
 }
 
+// 한 줄 소개: 예전에는 "왜 만들었나" 답을 여기에 같이 넣었다. 그 글은 소개로 치지 않는다
+function introOf(it){
+  var o = (it.one || '').trim(); if (!o) return '';
+  var isWhy = (it.logs || []).some(function(l){ return l.type === 'why' && (l.text || '').trim() === o; });
+  return isWhy ? '' : o;
+}
 function card(it){
   var cls = 'card' + (it.stopped ? ' stopped' : (it.kind==='main' ? ' main' : ''));
   if (selecting) cls += it.hidePf ? ' off' : (' pick' + (picked[it.id] ? ' picked' : ''));
@@ -1010,8 +1020,8 @@ function card(it){
   c.appendChild(top);
   c.appendChild(nameNode(it.name, selecting ? null : open));
 
-  if (it.one) c.appendChild(el('p', {class:'one'}, it.one));
-  else if (!selecting) c.appendChild(el('button', {class:'fill', type:'button', onclick:function(){ openDetail(it.id, 'log', 'edit'); }}, '한 줄이 비어 있어요 · 채우기'));
+  if (introOf(it)) c.appendChild(el('p', {class:'one'}, introOf(it)));
+  else if (!selecting) c.appendChild(el('button', {class:'fill', type:'button', onclick:function(){ openDetail(it.id, 'log', 'edit'); }}, '한 줄 소개가 비어 있어요 · 채우기'));
 
   var pl = primaryLink(it), n = (it.links || []).length;
   var lr = el('div', {class:'linkrow'});
@@ -1101,7 +1111,7 @@ function panel(it, type){
     setTimeout(function(){ inp.focus(); }, 0);
   } else if (type === 'edit'){
     var n = el('input', {type:'text', maxlength:'40', 'aria-label':'이름'}); n.value = it.name;
-    var o = el('textarea', {class:'grow', rows:'2', placeholder:'왜 만들었어요?', 'aria-label':'왜 만들었나요'}); o.value = it.one; setTimeout(function(){ autoGrow(o); }, 0);
+    var o = el('input', {type:'text', maxlength:'30', placeholder:'한 줄 소개 (예: 생활동선형 배송주소 플랫폼)', 'aria-label':'한 줄 소개'}); o.value = introOf(it);
     p.appendChild(n); p.appendChild(o);
     var y = null;
     if (it.kind === 'main'){ y = el('textarea', {class:'grow', rows:'2', placeholder:'메인으로 올린 이유', 'aria-label':'메인으로 올린 이유'}); y.value = it.why; setTimeout(function(){ autoGrow(y); }, 0); p.appendChild(y); }
@@ -1112,7 +1122,7 @@ function panel(it, type){
     }}, '저장'));
     r2.appendChild(el('button', {class:'btn sm', type:'button', onclick:closeDPanel}, '취소'));
     p.appendChild(r2);
-    setTimeout(function(){ (it.one ? n : o).focus(); }, 0);
+    setTimeout(function(){ (introOf(it) ? n : o).focus(); }, 0);
   } else if (type === 'stop'){
     p.appendChild(el('p', null, '왜 중단하나요?'));
     p.appendChild(el('span', {class:'hint'}, '멈춘 이유도 좋은 기록이에요. 나중에 포트폴리오에서 "왜 멈췄는지"로 쓰여요'));
@@ -1145,7 +1155,7 @@ function demote(id){ var it=find(id); it.kind='side'; it.order = topOrder('side'
 function update(id, patch){
   var it=find(id);
   if (patch.name !== it.name) addLog(it, 'auto', '이름 변경: ' + it.name + ' → ' + patch.name);
-  if (patch.one !== it.one && patch.one) addLog(it, it.one ? 'auto' : 'why', it.one ? '한 줄 수정: ' + patch.one : patch.one);
+  if (patch.one !== introOf(it) && patch.one) addLog(it, 'auto', '한 줄 소개: ' + patch.one);
   if (patch.why !== it.why && patch.why && it.kind === 'main') addLog(it, 'up', patch.why);
   for (var k in patch) it[k]=patch[k];
   commit('저장했어요');
@@ -1162,7 +1172,7 @@ function addLink(it, kind, url, title){
 }
 
 /* ---- 담기 칸: 새 프로젝트 / 기존 프로젝트에 링크 추가 ---- */
-var fu = document.getElementById('f-url'), fn = document.getElementById('f-name'), fo = document.getElementById('f-one');
+var fu = document.getElementById('f-url'), fn = document.getElementById('f-name'), fo = document.getElementById('f-one'), fi = document.getElementById('f-intro');
 var fk = document.getElementById('f-kind'), fp = document.getElementById('f-proj');
 var flt = document.getElementById('f-ltitle');
 flt.addEventListener('input', function(){ setErr(''); });
@@ -1213,16 +1223,16 @@ document.getElementById('add-form').addEventListener('submit', function(ev){
     return;
   }
   var name = fn.value.trim();
-  var one = fo.value.trim();
+  var one = fo.value.trim(), intro = fi.value.trim();
   var k = url ? K(kind, url, ltitle) : null;
-  var fresh = { id: uid(), name: name, one: one, kind: 'side', why: '', date: today(), hidePf: false, links: k ? [k] : [], primary: k ? k.id : null, logs: [] };
+  var fresh = { id: uid(), name: name, one: intro, kind: 'side', why: '', date: today(), hidePf: false, links: k ? [k] : [], primary: k ? k.id : null, logs: [] };
   addLog(fresh, one ? 'why' : 'auto', one || '담음');
   fresh.order = topOrder('side');
   items.unshift(fresh);
   resetQuick(); closeNew(); filter='all'; syncTabs();
   commit(josa(name, '을를') + ' 사이드 프로젝트로 올렸어요');
 });
-function resetQuick(){ flt.value=''; fu.value=''; fn.value=''; fo.value=''; fo.style.height=''; setErr(''); refreshQuick(); }
+function resetQuick(){ flt.value=''; fu.value=''; fn.value=''; fi.value=''; fo.value=''; fo.style.height=''; setErr(''); refreshQuick(); }
 fu.addEventListener('input', function(){ setErr(''); refreshQuick(); });
 [fn, fo, flt].forEach(function(x){ x.addEventListener('input', function(){ setErr(''); }); });
 
@@ -1311,7 +1321,7 @@ function renderDetail(){
   var b = document.getElementById('d-badge'); b.className = 'badge ' + (it.stopped ? 'stop' : it.kind); b.textContent = it.stopped ? '중단함' : (it.kind==='main' ? '메인' : '사이드');
   document.getElementById('d-name').textContent = it.name;
   document.getElementById('d-q').textContent = plainName(it.name) + '에 무슨 일이 있었나요?';
-  var one = document.getElementById('d-one'); one.textContent = it.one || ''; one.hidden = !it.one;
+  var one = document.getElementById('d-one'); one.textContent = introOf(it); one.hidden = !introOf(it);
 
   // 관리 메뉴 문구
   document.getElementById('dm-promote').textContent = it.kind === 'side' ? '↑ 메인으로 올리기' : '사이드로 내리기';
@@ -1553,7 +1563,7 @@ document.getElementById('n-del').addEventListener('click', function(){
 function collect(it){
   var asc = (it.logs || []).slice().sort(function(a,b){ return a.at < b.at ? -1 : 1; });
   var pick = function(t){ return asc.filter(function(l){ return l.type===t; }).map(function(l){ return l.text; }); };
-  var why = pick('why'); if (!why.length && it.one) why = [it.one];
+  var why = pick('why');
   var up = pick('up'); if (!up.length && it.why) up = [it.why];
   var made = asc.filter(function(l){ return isNote(l); }).map(function(l){ return l.text; });
   var starred = [];
@@ -1789,9 +1799,9 @@ function buildDeck(box, list){
     top.appendChild(el('span', {class:'badge ' + (it.stopped ? '' : (it.kind === 'main' ? 'main' : 'side'))}, it.stopped ? '중단' : (it.kind === 'main' ? '메인' : '사이드')));
     sl.appendChild(top);
     var tt = el('div', {class:'stitle'}); tt.appendChild(el('h3', null, name));
-    if (it.one) tt.appendChild(el('p', {class:'one'}, it.one));
+    if (introOf(it)) tt.appendChild(el('p', {class:'one'}, introOf(it)));
     sl.appendChild(tt);
-    lines.push('■ ' + two(i+1) + ' ' + name + (it.one ? ' — ' + it.one : ''));
+    lines.push('■ ' + two(i+1) + ' ' + name + (introOf(it) ? ' — ' + introOf(it) : ''));
 
     var period = s.start + ' – ' + (it.stopped ? '중단' : '진행 중');
     var nAll = (it.logs || []).filter(function(l){ return l.type !== 'auto'; }).length;
@@ -1983,7 +1993,7 @@ function refreshAIButtons(){
 function storyPrompt(list, note, prev){
   var rows = [];
   list.forEach(function(it){
-    rows.push('[프로젝트] ' + plainName(it.name) + ' (' + (it.stopped ? '중단함' : (it.kind === 'main' ? '메인' : '사이드')) + ')' + (it.one ? ' — 한 줄 소개: ' + it.one : ''));
+    rows.push('[프로젝트] ' + plainName(it.name) + ' (' + (it.stopped ? '중단함' : (it.kind === 'main' ? '메인' : '사이드')) + ')' + (introOf(it) ? ' — 한 줄 소개: ' + introOf(it) : ''));
     (it.logs || []).filter(function(l){ return l.type !== 'auto'; }).sort(function(a,b){ return a.at < b.at ? -1 : 1; })
       .forEach(function(l){ var k = l.linkId && (it.links || []).filter(function(x){ return x.id === l.linkId; })[0]; rows.push('- ' + fmtDay(l.at) + ' | ' + (isNote(l) && l.cat ? catOf(l.cat).short : (TYPE_LABEL[l.type] || '기록')) + ' | ' + l.text); });
     rows.push('');
