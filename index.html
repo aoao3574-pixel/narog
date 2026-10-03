@@ -618,7 +618,7 @@ button.brand{border:0;background:transparent;padding:0;font:inherit;font-weight:
         </div>
         <div class="field">
           <label for="f-intro">한 줄 소개 <span class="opt">선택 · 무엇인지 짧게</span></label>
-          <input type="text" id="f-intro" maxlength="30" placeholder="예: 생활동선형 배송주소 플랫폼" autocomplete="off">
+          <input type="text" id="f-intro" maxlength="30" placeholder="예: AI 구독형 플랫폼" autocomplete="off">
         </div>
         <div class="field">
           <label for="f-one">왜 만들었나요? <span class="opt">선택</span></label>
@@ -1111,7 +1111,7 @@ function panel(it, type){
     setTimeout(function(){ inp.focus(); }, 0);
   } else if (type === 'edit'){
     var n = el('input', {type:'text', maxlength:'40', 'aria-label':'이름'}); n.value = it.name;
-    var o = el('input', {type:'text', maxlength:'30', placeholder:'한 줄 소개 (예: 생활동선형 배송주소 플랫폼)', 'aria-label':'한 줄 소개'}); o.value = introOf(it);
+    var o = el('input', {type:'text', maxlength:'30', placeholder:'한 줄 소개 (예: AI 구독형 플랫폼)', 'aria-label':'한 줄 소개'}); o.value = introOf(it);
     p.appendChild(n); p.appendChild(o);
     var y = null;
     if (it.kind === 'main'){ y = el('textarea', {class:'grow', rows:'2', placeholder:'메인으로 올린 이유', 'aria-label':'메인으로 올린 이유'}); y.value = it.why; setTimeout(function(){ autoGrow(y); }, 0); p.appendChild(y); }
