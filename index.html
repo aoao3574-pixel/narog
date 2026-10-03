@@ -259,6 +259,7 @@ mark{background:var(--accent-soft);color:inherit;border-radius:3px;padding:0 1px
 .slide .sblk.key li::before{content:'';left:2px;top:9px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
 .slide .slot{border:1.5px dashed var(--line);border-radius:8px;padding:10px 12px;font-size:13px;color:var(--muted)}
 .decknote{font-size:12px;color:var(--muted)}
+@media (min-width:720px){.slide .sbody.noshot{grid-template-columns:minmax(0,1fr)}}
 .cats{display:flex;gap:6px;flex-wrap:wrap}
 .cat{height:30px;padding:0 12px;border-radius:15px;border:1px solid var(--line);background:var(--bg);font-size:13px;color:var(--muted);cursor:pointer;font-family:inherit}
 .cat[aria-pressed="true"]{background:var(--fg);border-color:var(--fg);color:var(--bg);font-weight:600}
@@ -1035,11 +1036,6 @@ function card(it){
     ws.appendChild(el('small', null, '중단한 이유'));
     ws.appendChild(el('span', null, it.stopWhy || '안 적었어요'));
     c.appendChild(ws);
-  } else if (it.kind === 'main'){
-    var w = el('div', {class:'why'});
-    w.appendChild(el('small', null, '메인으로 올린 이유'));
-    w.appendChild(el('span', null, it.why || '아직 안 적었어요'));
-    c.appendChild(w);
   }
   if (!selecting && it.hidePf) c.appendChild(el('span', {class:'offtag', style:'align-self:flex-start'}, '포트폴리오에서 빼 둠'));
 
@@ -1807,8 +1803,7 @@ function buildDeck(box, list){
     lines.push('기간: ' + period + ' · 기록 ' + nAll + '개' + (pl ? ' · ' + short(pl.url) : ''), '');
 
     var body = el('div', {class:'sbody'});
-    var shot = el('div', {class:'shot'}); shot.appendChild(el('b', null, '대표 화면')); shot.appendChild(el('span', null, '화면 사진이 들어갈 자리'));
-    body.appendChild(shot);
+    body.classList.add('noshot');
     var col = el('div', {class:'scol'}); body.appendChild(col);
     var blk = function(title, arr, cls){
       if (!arr.length) return;
