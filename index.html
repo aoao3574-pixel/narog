@@ -662,7 +662,7 @@ button.brand{border:0;background:transparent;padding:0;font:inherit;font-weight:
     </div>
     <div class="draft" id="pf-draft"></div>
     <div class="drow">
-      <span class="ainote">미리 보기예요. 실제로는 AI가 고른 프로젝트의 <b>적힌 기록만</b> 써서 한 편의 글로 엮어요.</span>
+      <span class="ainote">미리 보기예요. <b>나의 이야기</b>에서 "AI로 써 보기"를 누르면 고른 프로젝트의 기록이 Claude(Anthropic)로 전송되고, <b>적힌 기록만</b> 써서 글로 엮어요. 하루 10번까지 쓸 수 있어요.</span>
       <div class="row">
         <button type="button" class="btn sm aibtn2" id="pf-ai" hidden>✦ AI로 써 보기</button>
         <button type="button" class="btn sm" id="pf-back">다시 고르기</button>
@@ -1727,9 +1727,17 @@ document.addEventListener('keydown', function(e){
 
 
 /* ===== 진짜 AI로 "나의 이야기" 써 보기 (클로드 안에서 볼 때만) ===== */
-var sampler = null;
-(window.claude && window.claude.use ? window.claude.use('sample').catch(function(){ return null; }) : Promise.resolve(null))
-  .then(function(s){ sampler = s; refreshAIButtons(); });
+var sampler = function(prompt, opt){
+  // 지시문은 서버가 갖고 있어서, 화면은 기록만 보냄
+  var logs = prompt.split('작업 일지:\n')[1] || prompt;
+  return sb.auth.getSession().then(function(r){
+    var tok = r.data && r.data.session && r.data.session.access_token;
+    if (!tok) throw { code: 'not_signed_in' };
+    return fetch('/api/story', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tok }, body: JSON.stringify({ logs: logs }), signal: opt && opt.signal });
+  }).then(function(res){
+    return res.json().catch(function(){ return {}; }).then(function(j){ if (!res.ok) throw { code: j.code || 'error' }; return j; });
+  }).catch(function(e){ if (e && e.name === 'AbortError') throw { code: 'cancelled' }; throw e; });
+};
 function refreshAIButtons(){
   var pb = document.getElementById('pf-ai'), db = document.getElementById('d-ai-run');
   if (pb) pb.hidden = !(sampler && pfKind === 'story');
@@ -1769,7 +1777,7 @@ function runAI(box, list, btn){
   box.textContent = '';
   var tag = el('span', {class:'aitag'}, 'AI가 쓴 초안'); box.appendChild(tag);
   var body = el('div', {style:'display:flex;flex-direction:column;gap:12px'}); box.appendChild(body);
-  body.appendChild(el('p', {class:'thin'}, '기록을 읽고 쓰는 중이에요… (처음엔 10~40초쯤 걸려요)'));
+  body.appendChild(el('p', {class:'thin'}, 'Claude가 기록을 읽고 쓰는 중이에요… (10~30초쯤 걸려요)'));
   var show = function(text){
     body.textContent = '';
     text.split(/\n\s*\n/).forEach(function(par){ if (par.trim()) body.appendChild(el('p', {class:'st'}, par.trim())); });
@@ -1778,12 +1786,15 @@ function runAI(box, list, btn){
   sampler(storyPrompt(list), { signal: ctl.signal, onText: function(u){ show(u.text); } })
     .then(function(r){
       show(r.text);
-      box.appendChild(el('p', {class:'thin'}, r.truncated ? '글이 길어서 중간에 끊겼어요. 프로젝트를 줄여서 다시 해 보세요.' : '작업 일지에 적힌 내용만 쓰도록 했어요. 그래도 사실과 다른 곳이 있으면 고쳐서 쓰세요.'));
+      box.appendChild(el('p', {class:'thin'}, (r.truncated ? '글이 길어서 중간에 끊겼어요. 프로젝트를 줄여서 다시 해 보세요.' : '작업 일지에 적힌 내용만 쓰도록 했어요. 그래도 사실과 다른 곳이 있으면 고쳐서 쓰세요.') + (typeof r.left === 'number' ? ' · 오늘 ' + r.left + '번 더 쓸 수 있어요' : '')));
     })
     .catch(function(e){
       if (e && e.text) show(e.text); else if (!e || e.code !== 'cancelled') body.textContent = '';
       var code = e && e.code;
       if (['not_granted','sampling_disabled','not_declared','capability_disabled','capability_removed'].indexOf(code) > -1){ sampler = null; refreshAIButtons(); toast('이 화면에선 AI를 쓸 수 없어요. 미리 보기로 볼게요'); if (box.id === 'pf-draft') openPf(); else renderDetail(); }
+      else if (code === 'quota'){ toast('오늘 쓸 수 있는 10번을 다 썼어요. 내일 다시 해 주세요'); if (box.id === 'pf-draft') openPf(); }
+      else if (code === 'not_signed_in') toast('로그인이 풀렸어요. 다시 로그인해 주세요');
+      else if (code === 'not_configured'){ toast('AI가 아직 연결되지 않았어요'); if (box.id === 'pf-draft') openPf(); }
       else if (code === 'rate_limited') toast('잠깐 사용량이 많아요. 조금 뒤에 다시 눌러 주세요');
       else if (code === 'refused') toast('AI가 이 기록으로는 글을 쓰지 않았어요');
       else if (code !== 'cancelled') toast('AI 연결이 끊겼어요. 다시 눌러 주세요');
