@@ -551,8 +551,8 @@ button.brand{border:0;background:transparent;padding:0;font:inherit;font-weight:
   </div>
   <div class="gogrid">
     <button type="button" class="gocard" id="go-log">
-      <span class="gok">한 줄로 기록하기</span>
-      <b>나의 프로젝트에 무슨 일이 있었나요?</b>
+      <span class="gok">한곳에 정리하기</span>
+      <b>내 프로젝트 보기</b>
       <span class="gosub" id="go-log-sub"></span>
       <svg class="goarr" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg>
     </button>
@@ -2095,13 +2095,13 @@ function recentItem(){ return items.slice().sort(byRecent)[0] || null; }
 function renderHome(){
   if (!loggedIn){
     document.getElementById('go-sub').textContent = '이름만 있으면 프로젝트로 올라가요';
-    document.getElementById('go-log-sub').textContent = '프로젝트마다 오늘 한 일을 한 줄씩';
+    document.getElementById('go-log-sub').textContent = '프로젝트별로 링크와 기록을 정리해 둬요';
     document.getElementById('go-pf-sub').textContent = '쌓인 한 줄들로 나의 포트폴리오 · 나의 이야기';
     return;
   }
   var m = items.filter(function(i){ return i.kind==='main'; }).length, r = recentItem();
   document.getElementById('go-sub').textContent = '이름만 있으면 프로젝트로 올라가요';
-  document.getElementById('go-log-sub').textContent = items.length ? ('메인 ' + m + ' · 사이드 ' + (items.length - m) + (r ? ' · 최근 ' + plainName(r.name) : '')) : '먼저 만든 걸 올리면 여기서 기록해요';
+  document.getElementById('go-log-sub').textContent = '프로젝트별로 링크와 기록을 정리해 둬요';
   var elig = eligible().length;
   document.getElementById('go-pf-sub').textContent = elig ? '골라서 나의 포트폴리오 · 나의 이야기로' : '기록이 쌓이면 여기서 꺼내 써요';
 }
