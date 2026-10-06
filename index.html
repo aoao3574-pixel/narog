@@ -568,7 +568,7 @@ textarea.grow{resize:none;line-height:1.5;overflow:hidden;font-family:inherit}
 .foot-info .mail{user-select:all;color:var(--muted)}
 #home.intro .foot-info{animation:heroIn 1.1s cubic-bezier(.2,.7,.2,1) both;animation-delay:4.7s}
 @media (prefers-reduced-motion:reduce){#home.intro .foot-info{animation:none}}
-.hero-note{margin:6px 0 0;padding-top:16px;border-top:1px solid var(--line);font-size:14px;line-height:1.7;color:var(--muted);align-self:stretch}
+.hero-note{margin:-10px 0 0;font-size:14px;line-height:1.7;color:var(--muted)}
 .hero-note b{color:var(--fg);font-weight:700;font-size:15px}
 @keyframes heroIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 #home.intro .eyebrow,#home.intro .hero-h .ln,#home.intro .hero-p,#home.intro .hero-note,#home.intro .gocard,#home.intro .foot-links{animation:heroIn 1.1s cubic-bezier(.2,.7,.2,1) both}
@@ -1377,8 +1377,10 @@ document.getElementById('add-form').addEventListener('submit', function(ev){
   addLog(fresh, one ? 'why' : 'auto', one || '담음');
   fresh.order = topOrder('side');
   items.unshift(fresh);
-  resetQuick(); closeNew(); filter='all'; syncTabs();
+  // 올린 뒤에는 첫 화면이 아니라 내 프로젝트 목록으로 간다
+  view = 'list'; resetQuick(); closeNew(); filter='all'; syncTabs();
   commit(josa(name, '을를') + ' 사이드 프로젝트로 올렸어요');
+  window.scrollTo(0, 0);
 });
 function resetQuick(){ flt.value=''; fu.value=''; fn.value=''; fi.value=''; fo.value=''; fo.style.height=''; setErr(''); refreshQuick(); }
 fu.addEventListener('input', function(){ setErr(''); refreshQuick(); });
